@@ -111,8 +111,15 @@ body {
   width: 124%;
   height: 124%;
   transform: rotate(-1.5deg) translate(-6%, -4%);
-  opacity: 0.11;
-  filter: blur(3px) brightness(0.55) saturate(0.85);
+  opacity: 0.14;
+  filter: blur(3px) brightness(0.60) saturate(0.9);
+  will-change: transform;
+  animation: bgDrift 72s ease-in-out infinite alternate;
+}
+
+@keyframes bgDrift {
+  0% { transform: rotate(-1.5deg) translate(-6%, -4%) scale(1); }
+  100% { transform: rotate(-1.5deg) translate(-3%, -7%) scale(1.03); }
 }
 
 .site-bg__grid img {
@@ -127,18 +134,32 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(900px 520px at 50% -8%, rgba(254, 32, 32, 0.09), transparent 62%),
-    radial-gradient(700px 500px at 85% 30%, rgba(254, 32, 32, 0.04), transparent 60%),
-    radial-gradient(600px 600px at 10% 80%, rgba(255, 193, 7, 0.03), transparent 55%),
-    linear-gradient(180deg, rgba(19,19,19,0.55) 0%, rgba(19,19,19,0.78) 38%, rgba(19,19,19,0.94) 68%, var(--nightfall) 100%);
+    radial-gradient(900px 520px at 50% -8%, rgba(254, 32, 32, 0.10), transparent 62%),
+    radial-gradient(700px 500px at 85% 30%, rgba(254, 32, 32, 0.05), transparent 60%),
+    radial-gradient(600px 600px at 10% 80%, rgba(255, 193, 7, 0.035), transparent 55%),
+    linear-gradient(180deg, rgba(19,19,19,0.52) 0%, rgba(19,19,19,0.76) 38%, rgba(19,19,19,0.92) 68%, var(--nightfall) 100%);
+  animation: spotPulse 10s ease-in-out infinite;
+}
+
+@keyframes spotPulse {
+  0%, 100% { opacity: 0.95; }
+  50% { opacity: 1; filter: brightness(1.08); }
 }
 
 .site-bg__grain {
   position: absolute;
   inset: 0;
-  opacity: 0.035;
+  opacity: 0.045;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   mix-blend-mode: soft-light;
+  animation: grainJitter 0.9s steps(3) infinite;
+}
+
+@keyframes grainJitter {
+  0% { transform: translate(0, 0); }
+  33% { transform: translate(-0.6%, -0.4%); }
+  66% { transform: translate(0.4%, 0.6%); }
+  100% { transform: translate(0, 0); }
 }
 
 .site-bg__vignette {
@@ -164,17 +185,20 @@ body {
 }
 
 @media (max-width: 900px) {
-  .site-bg__grid { grid-template-columns: repeat(3, 1fr); gap: 8px; opacity: 0.09; width: 130%; height: 130%; }
+  .site-bg__grid { grid-template-columns: repeat(3, 1fr); gap: 8px; opacity: 0.11; width: 130%; height: 130%; }
   .site-bg__grid img { height: 190px; border-radius: 8px; }
 }
 
 @media (max-width: 600px) {
-  .site-bg__grid { grid-template-columns: repeat(2, 1fr); opacity: 0.07; }
+  .site-bg__grid { grid-template-columns: repeat(2, 1fr); opacity: 0.09; }
   .site-bg__grid img { height: 170px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-bg__grid { transform: none; filter: blur(2px) brightness(0.5); }
+  .site-bg__grid { animation: none !important; transform: none; filter: blur(2px) brightness(0.5); }
+  .site-bg__overlay { animation: none !important; }
+  .site-bg__grain { animation: none !important; }
+  .hero::before { animation: none !important; }
 }
 
 a {
