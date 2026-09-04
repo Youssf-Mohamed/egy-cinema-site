@@ -111,33 +111,52 @@ main, .site-nav, .site-footer {
   z-index: 1;
 }
 
-.site-bg__grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  width: 135%;
-  height: 150%;
-  align-content: start;
-  transform: rotate(-1deg) translate(-5%, -6%);
-  opacity: 0.58;
-  filter: blur(5px) brightness(0.92) saturate(1.08);
+.site-bg__track {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  transform: rotate(-1deg);
+  opacity: 0.55;
+  filter: blur(4px) brightness(0.85) saturate(1.02);
+}
+
+.site-bg__row {
+  display: flex;
+  gap: 14px;
+  width: max-content;
   will-change: transform;
-  animation: bgDrift 28s ease-in-out infinite alternate;
+}
+
+.site-bg__row--top {
+  animation: scrollRight 42s linear infinite;
+}
+
+.site-bg__row--bottom {
+  animation: scrollRight 42s linear infinite reverse;
+}
+
+.site-bg__row img {
+  width: 210px;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+}
+
+@keyframes scrollRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
 }
 
 @keyframes bgDrift {
   0% { transform: rotate(-1deg) translate(-5%, -6%) scale(1); }
   100% { transform: rotate(-1deg) translate(-1%, -2%) scale(1.04); }
-}
-
-.site-bg__grid img {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 2 / 3;
-  object-fit: cover;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.10);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 
 .site-bg__overlay {
@@ -201,17 +220,21 @@ main, .site-nav, .site-footer {
 }
 
 @media (max-width: 900px) {
-  .site-bg__grid { grid-template-columns: repeat(3, 1fr); gap: 8px; opacity: 0.26; width: 135%; height: 150%; }
-  .site-bg__grid img { height: auto; aspect-ratio: 2 / 3; border-radius: 8px; }
+  .site-bg__track { opacity: 0.48; gap: 10px; }
+  .site-bg__row img { width: 180px; }
+  .site-bg__row--top { animation-duration: 38s; }
+  .site-bg__row--bottom { animation-duration: 38s; }
 }
 
 @media (max-width: 600px) {
-  .site-bg__grid { grid-template-columns: repeat(2, 1fr); opacity: 0.22; gap: 8px; }
-  .site-bg__grid img { height: auto; aspect-ratio: 2 / 3; }
+  .site-bg__track { opacity: 0.42; gap: 8px; }
+  .site-bg__row { gap: 8px; }
+  .site-bg__row img { width: 150px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-bg__grid { animation: none !important; transform: none; filter: blur(2px) brightness(0.5); }
+  .site-bg__track { filter: blur(2px) brightness(0.5); }
+  .site-bg__row--top, .site-bg__row--bottom { animation: none !important; }
   .site-bg__overlay { animation: none !important; }
   .site-bg__grain { animation: none !important; }
   .hero::before { animation: none !important; }
