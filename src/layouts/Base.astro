@@ -63,7 +63,7 @@ const navLinks = [
 
     <link rel="alternate" hreflang={locale} href={canonical} />
     <link rel="alternate" hreflang={otherLocale} href={altHref} />
-    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={buildHreflang('en', path)} />
 
     <meta property="og:type" content={type} />
     <meta property="og:site_name" content="EGY CINEMA" />
@@ -90,20 +90,22 @@ const navLinks = [
   <body>
     <div class="site-bg" aria-hidden="true">
       <div class="site-bg__grid">
-        <img src="/images/login/tt0816692.jpg" alt="" loading="lazy" />
-        <img src="/images/login/tt11378946.jpg" alt="" loading="lazy" />
-        <img src="/images/login/tt12042730.jpg" alt="" loading="lazy" />
-        <img src="/images/login/tt15239678.jpg" alt="" loading="lazy" />
-        <img src="/images/login/tt1745960.jpg" alt="" loading="lazy" />
-        <img src="/images/login/tt1757678.jpg" alt="" loading="lazy" />
-        <img src="/images/login/tt26443616.jpg" alt="" loading="lazy" />
-        <img src="/images/login/tt30144839.jpg" alt="" loading="lazy" />
-        <img src="/images/login/tt30460310.jpg" alt="" loading="lazy" />
-        <img src="/images/login/tt30825738.jpg" alt="" loading="lazy" />
-        <img src="/images/login/tt34378301.jpg" alt="" loading="lazy" />
-        <img src="/images/login/tt37287335.jpg" alt="" loading="lazy" />
+        <img src="/images/login/tt0816692.jpg" alt="" loading="lazy" decoding="async" />
+        <img src="/images/login/tt11378946.jpg" alt="" loading="lazy" decoding="async" />
+        <img src="/images/login/tt12042730.jpg" alt="" loading="lazy" decoding="async" />
+        <img src="/images/login/tt15239678.jpg" alt="" loading="lazy" decoding="async" />
+        <img src="/images/login/tt1745960.jpg" alt="" loading="lazy" decoding="async" />
+        <img src="/images/login/tt1757678.jpg" alt="" loading="lazy" decoding="async" />
+        <img src="/images/login/tt26443616.jpg" alt="" loading="lazy" decoding="async" />
+        <img src="/images/login/tt30144839.jpg" alt="" loading="lazy" decoding="async" />
+        <img src="/images/login/tt30460310.jpg" alt="" loading="lazy" decoding="async" />
+        <img src="/images/login/tt30825738.jpg" alt="" loading="lazy" decoding="async" />
+        <img src="/images/login/tt34378301.jpg" alt="" loading="lazy" decoding="async" />
+        <img src="/images/login/tt37287335.jpg" alt="" loading="lazy" decoding="async" />
       </div>
       <div class="site-bg__overlay"></div>
+      <div class="site-bg__grain"></div>
+      <div class="site-bg__vignette"></div>
     </div>
     {!hideNav && (
       <header class="site-nav container">
