@@ -1,26 +1,52 @@
 /* ════════════════════════════════════════════════════════════════════════════
-   EGY CINEMA — Marquee design system
+   EGY CINEMA — Obsidian Marquee — grounded in Egyptian street-cinema
    ────────────────────────────────────────────────────────────────────────────
-   Canvas: Nightfall (#0E1320) — blue-shifted dark, not neutral charcoal.
-   Accent: Ochre (#D9A24B) — marquee gold.
-   Reserve: Velvet (#7A1A28) — used ONLY for the download button.
-   Type:    Cairo (display + body) + IBM Plex Mono (slate / utility / data).
-   Signature: the Marquee Rule — 1px ochre hairline + section title in Plex Mono.
+   Subject: EGY CINEMA — archive & streaming portal for Egyptian / Arab
+            cinema (1950s posters, downtown Cairo marquees, ticket stubs).
+   Audience: Arabic-first cinephiles 18–45, diaspora + local, mobile-first
+             but desktop for long-form viewing. Job: drive a single
+             trusted download (APK / ZIP) — no account, no paywall.
+   Thesis: Hero is the marquee itself — the street sign you see before
+           you see the film. Type is the poster. Structure is the program.
+   Palette — Obsidian Crimson (brief) + Gilded Marquee (risk):
+     Obsidian  #131313 — brief's deep canvas, the darkened theater
+     Charcoal  #1B1C1C — Level 1 surface (card)
+     Ember     #2A2A2A — Level 2 surface / hover
+     Crimson   #FE2020 — brief's laser focus (CTA, active, Intent)
+     Gilded    #D9A24B — risk: marquee gold leaf, Arabic poster typography
+     Lantern   #E4E2E1 — on-surface, warm paper
+     Smoke     #8A8A8A / #7A7686 — muted metadata
+   Type:
+     Display: Cairo 700/900 — brief-mandated, architectural, bilingual
+     Body:    Cairo 400 — same family for reading rhythm
+     Slate:   IBM Plex Mono 400/500 — sprocket / slate / data, 11px mono
+   Layout: Single-column editorial, 720px reading measure, 1100px hero
+           canvas. Sections are programmed like a cinema handbill.
+           12-col implied, 24px gutters, 8px rhythm, 64px margins.
+   Signature: Perforated Ticket Stub + Marquee Rule. Every CTA is a
+              torn ticket (perforation = 6px radial dots). Every section
+              rides an ochre hairline with the title SET ON the rule in
+              mono — the rule IS the information architecture. Bulbs are
+              restrained: 3 dots only, never a string.
+   Risk: Gold on crimson on obsidian — warm metallic against laser red.
+         Justified: Egyptian posters were always gold leaf on red velvet;
+         the pairing signals heritage, not tech. Crimson stays for intent,
+         gold for identity — they never compete on the same element.
    ════════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  --nightfall:        #0E1320;
-  --midnight:         #161C2E;
-  --midnight-hi:      #1E2540;
+  --nightfall:        #131313;
+  --midnight:         #1B1C1C;
+  --midnight-hi:      #2A2A2A;
   --ochre:            #D9A24B;
   --ochre-soft:       #B8883A;
-  --velvet:           #7A1A28;
-  --velvet-hi:        #9B2233;
-  --lantern:          #E8DCC4;
-  --smoke:            #7A7686;
-  --smoke-soft:       #4F4C5A;
+  --velvet:           #FE2020;
+  --velvet-hi:        #E53935;
+  --lantern:          #E4E2E1;
+  --smoke:            #8A8A8A;
+  --smoke-soft:       #5A5A5A;
   --rule:             rgba(217, 162, 75, 0.30);
-  --rule-soft:        rgba(232, 220, 196, 0.10);
+  --rule-soft:        rgba(228, 226, 225, 0.10);
 
   --content-max:      720px;
   --hero-max:         1100px;
