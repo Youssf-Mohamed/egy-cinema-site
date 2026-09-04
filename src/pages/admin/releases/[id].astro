@@ -149,8 +149,9 @@ const isStorageUrl = (u: string) => u.includes('/storage/v1/object/public/releas
         <h2 style="font-size: 1.125rem; margin: 24px 0 8px; padding-top: 24px; border-top: 1px solid var(--rule-soft);">Other platforms — URL only</h2>
 
         <div class="form__field">
-          <label class="form__label" for="download_url">Generic download URL (fallback)</label>
-          <input class="form__input" type="url" id="download_url" name="download_url" value={download_url} />
+          <label class="form__label" for="download_url">Main Download URL — Android (column: download_url, legacy fallback)</label>
+          <input class="form__input" type="url" id="download_url" name="download_url" value={download_url || android_download_url} placeholder="https://... (same as Android APK URL)" />
+          <span style="font-size: 11px; color: var(--smoke);">This is the primary download URL (Supabase column: download_url). For Android, this and the Android field below are kept in sync — uploading an APK above will auto-fill both.</span>
         </div>
 
         <div class="form__row">
@@ -260,6 +261,9 @@ const isStorageUrl = (u: string) => u.includes('/storage/v1/object/public/releas
           if (file.size > 524288000) throw new Error('Android file too large (max 500 MB)');
           const url = await uploadToStorage(file, version, 'android');
           document.getElementById('android_download_url').value = url;
+          // Keep legacy download_url (main Android URL) in sync
+          const mainInput = document.getElementById('download_url');
+          if (mainInput) mainInput.value = url;
           showStatus(hasWindowsFile ? `Both files uploaded. Saving...` : `Android file uploaded: ${file.name}. Saving...`);
         }
 

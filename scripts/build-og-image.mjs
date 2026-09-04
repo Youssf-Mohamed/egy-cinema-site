@@ -48,7 +48,7 @@ const svg = `
 
   <!-- Tagline -->
   <text x="80" y="360" font-family="Cairo, sans-serif" font-size="32" font-weight="400" fill="${LANTERN}" fill-opacity="0.85">
-    Movies and TV, in Arabic, on Windows and Android. Free.
+    Movies and TV on Windows and Android. Free.
   </text>
 
   <!-- Marquee rule with section label -->

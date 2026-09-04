@@ -86,6 +86,11 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   // URL fields are used if no file was uploaded
   const windowsUrlFromInput = String(form.get('windows_download_url') ?? '').trim() || null;
   const androidUrlFromInput = String(form.get('android_download_url') ?? '').trim() || null;
+  const genericInput = String(form.get('download_url') ?? '').trim() || null;
+
+  // download_url is the legacy Android/main column — keep it synced with Android
+  const resolvedAndroidUrl = androidUrlFromFile ?? androidUrlFromInput ?? genericInput;
+  const resolvedDownloadUrl = resolvedAndroidUrl ?? genericInput;
 
   const payload = {
     min_version,
@@ -94,11 +99,11 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     notes_html,
     is_published,
     release_date,
-    download_url:         String(form.get('download_url') ?? '').trim() || null,
+    download_url:         resolvedDownloadUrl,
     windows_download_url: windowsUrlFromFile ?? windowsUrlFromInput,
     mac_download_url:     String(form.get('mac_download_url') ?? '').trim() || null,
     linux_download_url:   String(form.get('linux_download_url') ?? '').trim() || null,
-    android_download_url: androidUrlFromFile ?? androidUrlFromInput,
+    android_download_url: resolvedAndroidUrl,
     ios_download_url:     String(form.get('ios_download_url') ?? '').trim() || null,
   };
 

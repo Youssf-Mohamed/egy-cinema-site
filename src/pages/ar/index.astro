@@ -21,7 +21,6 @@ const appLd = release ? buildSoftwareAppLd(locale, version, releaseDate, windows
 const faqItems = [
   { q: t(locale, 'faq.01.q'), a: t(locale, 'faq.01.a') },
   { q: t(locale, 'faq.02.q'), a: t(locale, 'faq.02.a') },
-  { q: t(locale, 'faq.03.q'), a: t(locale, 'faq.03.a') },
   { q: t(locale, 'faq.04.q'), a: t(locale, 'faq.04.a') },
   { q: t(locale, 'faq.05.q'), a: t(locale, 'faq.05.a') },
 ];
@@ -35,7 +34,7 @@ const platforms: PlatformKey[] = ['windows_download_url', 'android_download_url'
 const platformList: Array<'windows' | 'android'> = ['windows', 'android'];
 const platformUrlMap: Record<'windows' | 'android', string | null> = {
   windows: release ? (platformUrl(release, 'windows_download_url') ?? platformUrl(release, 'download_url')) : null,
-  android: release ? platformUrl(release, 'android_download_url') : null,
+  android: release ? (platformUrl(release, 'android_download_url') ?? platformUrl(release, 'download_url')) : null,
 };
 
 void platforms;

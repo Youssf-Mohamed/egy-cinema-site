@@ -1,7 +1,7 @@
 {
   "site.name": "EGY CINEMA",
-  "site.tagline": "Movies and TV, in Arabic, on Windows and Android.",
-  "site.description": "EGY CINEMA is a free Arabic-language streaming app for movies and TV shows on Windows and Android.",
+  "site.tagline": "Movies and TV on Windows and Android.",
+  "site.description": "EGY CINEMA is a free streaming app for movies and TV shows on Windows and Android.",
   "site.keywords": "egyptian movies, arabic streaming, free movies, arabic tv shows, egy cinema, تحميل افلام, مشاهدة افلام, افلام عربيه, مسلسلات عربية",
 
   "nav.features": "Features",
@@ -11,7 +11,7 @@
 
   "hero.eyebrow": "Now playing on your desktop",
   "hero.title": "EGY CINEMA",
-  "hero.tagline": "Movies and TV, in Arabic, on Windows and Android. Free.",
+  "hero.tagline": "Movies and TV on Windows and Android. Free.",
   "hero.cta": "Download for Windows",
   "hero.cta.detect": "Detecting your platform",
   "hero.subline": "Also available for Android.",
@@ -19,7 +19,7 @@
   "hero.released.label": "Released",
 
   "what.title": "What it is",
-  "what.heading": "Watch anything. Free. Arabic.",
+  "what.heading": "Watch anything. Free.",
   "what.lead": "EGY CINEMA is a streaming app for Egyptian and Arab cinema lovers. Browse thousands of titles, build a watchlist, and watch in sync with friends.",
   "what.card.movies.title": "Movies",
   "what.card.movies.body": "New releases, classics, and hidden gems from across the Arab world and beyond.",
@@ -65,14 +65,12 @@
   "faq.01.a": "Yes. The app is free to download and use. No subscription, no ads inside the player.",
   "faq.02.q": "Do I need an account?",
   "faq.02.a": "You can browse without one. An account is required to save a watchlist, sync favorites, and use Watch Together.",
-  "faq.03.q": "Is it safe?",
-  "faq.03.a": "Yes. It uses Supabase for accounts and TMDB for metadata. Source code is on GitHub.",
   "faq.04.q": "What languages does it support?",
-  "faq.04.a": "Arabic (default) and English. The interface is right-to-left native for Arabic.",
+  "faq.04.a": "English (default) and Arabic. The interface is right-to-left native for Arabic.",
   "faq.05.q": "How do I get updates?",
   "faq.05.a": "The app checks for new versions on launch. You'll be prompted to update when a new version is available.",
 
-  "footer.tagline": "Movies and TV, in Arabic, on Windows and Android.",
+  "footer.tagline": "Movies and TV on Windows and Android.",
   "footer.links.github": "GitHub",
   "footer.links.changelog": "Changelog",
   "footer.links.admin": "Admin",
