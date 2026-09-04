@@ -1,7 +1,7 @@
 {
   "site.name": "EGY CINEMA",
-  "site.tagline": "Movies and TV, in Arabic, on every desktop.",
-  "site.description": "EGY CINEMA is a free Arabic-language streaming app for movies and TV shows on Windows, macOS, Linux, Android, and iOS.",
+  "site.tagline": "Movies and TV, in Arabic, on Windows and Android.",
+  "site.description": "EGY CINEMA is a free Arabic-language streaming app for movies and TV shows on Windows and Android.",
   "site.keywords": "egyptian movies, arabic streaming, free movies, arabic tv shows, egy cinema, تحميل افلام, مشاهدة افلام, افلام عربيه, مسلسلات عربية",
 
   "nav.features": "Features",
@@ -11,10 +11,10 @@
 
   "hero.eyebrow": "Now playing on your desktop",
   "hero.title": "EGY CINEMA",
-  "hero.tagline": "Movies and TV, in Arabic, on every desktop. Free.",
+  "hero.tagline": "Movies and TV, in Arabic, on Windows and Android. Free.",
   "hero.cta": "Download for Windows",
   "hero.cta.detect": "Detecting your platform",
-  "hero.subline": "Also available for macOS, Linux, Android, and iOS.",
+  "hero.subline": "Also available for Android.",
   "hero.version.label": "Latest version",
   "hero.released.label": "Released",
 
@@ -40,7 +40,7 @@
   "features.04.title": "Recent history",
   "features.04.body": "Pick up where you left off, on any signed-in device.",
   "features.05.title": "Multi-platform",
-  "features.05.body": "Windows, macOS, Linux, Android, and iOS. Same library, same list.",
+  "features.05.body": "Windows and Android. Same library, same list.",
   "features.06.title": "Arabic UI",
   "features.06.body": "Right-to-left native. Built for Arabic readers, not translated into it.",
 
@@ -72,7 +72,7 @@
   "faq.05.q": "How do I get updates?",
   "faq.05.a": "The app checks for new versions on launch. You'll be prompted to update when a new version is available.",
 
-  "footer.tagline": "Movies and TV, in Arabic, on every desktop.",
+  "footer.tagline": "Movies and TV, in Arabic, on Windows and Android.",
   "footer.links.github": "GitHub",
   "footer.links.changelog": "Changelog",
   "footer.links.admin": "Admin",

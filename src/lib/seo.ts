@@ -1,7 +1,7 @@
 import type { Locale } from '../i18n/ui';
 import { t } from '../i18n/ui';
 
-export const SITE_URL = 'https://egy-cinema.vercel.app';
+export const SITE_URL = 'https://egy-cinema-site.vercel.app';
 
 export interface SeoConfig {
   locale: Locale;
@@ -46,7 +46,7 @@ export function buildSoftwareAppLd(
     '@type': 'SoftwareApplication',
     name: 'EGY CINEMA',
     applicationCategory: 'MultimediaApplication',
-    operatingSystem: 'Windows, macOS, Linux, Android, iOS',
+    operatingSystem: 'Windows, Android',
     description: t(locale, 'site.description'),
     url: SITE_URL,
     downloadUrl: downloadUrl ?? absoluteUrl('/'),
