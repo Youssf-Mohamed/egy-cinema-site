@@ -6,8 +6,9 @@ import vercel from '@astrojs/vercel';
 import { defaultLocale, locales } from './src/i18n/ui.ts';
 
 export default defineConfig({
-  site: 'https://egy-cinema.vercel.app',
+  site: 'https://egy-cinema-site.vercel.app',
   output: 'server',
+  security: { checkOrigin: false },
   trailingSlash: 'ignore',
   build: {
     format: 'directory',
