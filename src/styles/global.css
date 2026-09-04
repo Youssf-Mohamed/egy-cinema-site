@@ -288,11 +288,29 @@ p:last-child { margin-bottom: 0; }
 }
 
 section {
-  padding: var(--section-gap) 0;
+  padding: 28px 0;
+}
+
+.section-card {
+  background: rgba(27, 28, 28, 0.72);
+  backdrop-filter: blur(16px) saturate(1.15);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  padding: 36px 32px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.35), 0 4px 16px rgba(0,0,0,0.25);
+}
+
+.section-card--hero {
+  background: rgba(27, 28, 28, 0.68);
+  padding: 40px 36px;
 }
 
 @media (max-width: 720px) {
-  section { padding: var(--section-gap-mb) 0; }
+  section { padding: 20px 0; }
+  .section-card { padding: 24px 20px; border-radius: 12px; }
+  .section-card--hero { padding: 28px 22px; }
   :root { --gutter: 20px; }
 }
 
@@ -335,8 +353,87 @@ section {
 }
 
 .hero {
-  padding: 80px 0 96px;
+  padding: 72px 0 88px;
   position: relative;
+}
+
+.hero__inner {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.hero__content {
+  flex: 1 1 560px;
+  max-width: 620px;
+  min-width: 0;
+}
+
+.hero__visual {
+  flex: 0 0 440px;
+  position: relative;
+  display: block;
+}
+
+.hero__window {
+  background: var(--midnight);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.hero__window-bar {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  background: #0D0D0D;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.hero__window-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.hero__window-dot--red { background: #FF5F57; }
+.hero__window-dot--yellow { background: #FFBD2E; }
+.hero__window-dot--green { background: #28CA42; }
+
+.hero__window-title {
+  margin-left: 12px;
+  font-family: var(--font-slate);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--smoke);
+}
+
+.hero__window-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 14px;
+  background: var(--nightfall);
+}
+
+.hero__window-grid img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+@media (max-width: 980px) {
+  .hero__visual { flex: 0 0 380px; }
+}
+
+@media (max-width: 900px) {
+  .hero__inner { flex-direction: column; align-items: stretch; gap: 36px; }
+  .hero__visual { flex: none; width: 100%; max-width: 480px; margin: 0 auto; }
 }
 
 @media (max-width: 720px) {
