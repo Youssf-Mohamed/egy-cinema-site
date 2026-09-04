@@ -6,10 +6,10 @@ import path from 'node:path';
 
 const W = 1200;
 const H = 630;
-const NIGHTFALL = '#0E1320';
-const OCHRE = '#D9A24B';
-const LANTERN = '#E8DCC4';
-const SMOKE = '#7A7686';
+const NIGHTFALL = '#131313';
+const OCHRE = '#FE2020';
+const LANTERN = '#E4E2E1';
+const SMOKE = '#8F8D8B';
 
 // Build an SVG and rasterize it via sharp.
 const svg = `
@@ -24,7 +24,7 @@ const svg = `
       <stop offset="100%" stop-color="#B8A88A"/>
     </linearGradient>
     <radialGradient id="glow" cx="50%" cy="20%" r="60%">
-      <stop offset="0%" stop-color="${OCHRE}" stop-opacity="0.18"/>
+      <stop offset="0%" stop-color="${OCHRE}" stop-opacity="0.08"/>
       <stop offset="100%" stop-color="${OCHRE}" stop-opacity="0"/>
     </radialGradient>
   </defs>
@@ -48,7 +48,7 @@ const svg = `
 
   <!-- Tagline -->
   <text x="80" y="360" font-family="Cairo, sans-serif" font-size="32" font-weight="400" fill="${LANTERN}" fill-opacity="0.85">
-    Movies and TV, in Arabic, on every desktop. Free.
+    Movies and TV, in Arabic, on Windows and Android. Free.
   </text>
 
   <!-- Marquee rule with section label -->
@@ -61,10 +61,7 @@ const svg = `
   <!-- Platforms -->
   <g font-family="IBM Plex Mono, monospace" font-size="13" font-weight="500" fill="${SMOKE}" letter-spacing="2">
     <text x="80" y="560">WINDOWS</text>
-    <text x="220" y="560">MACOS</text>
-    <text x="340" y="560">LINUX</text>
-    <text x="450" y="560">ANDROID</text>
-    <text x="590" y="560">IOS</text>
+    <text x="220" y="560">ANDROID</text>
   </g>
 
   <!-- Bottom hairline -->

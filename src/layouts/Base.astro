@@ -52,7 +52,8 @@ const navLinks = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0E1320" />
+    <meta name="theme-color" content="#131313" />
+    <link rel="icon" type="image/png" href="/logo.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <title>{fullTitle}</title>
@@ -87,10 +88,27 @@ const navLinks = [
   </head>
 
   <body>
+    <div class="site-bg" aria-hidden="true">
+      <div class="site-bg__grid">
+        <img src="/images/login/tt0816692.jpg" alt="" loading="lazy" />
+        <img src="/images/login/tt11378946.jpg" alt="" loading="lazy" />
+        <img src="/images/login/tt12042730.jpg" alt="" loading="lazy" />
+        <img src="/images/login/tt15239678.jpg" alt="" loading="lazy" />
+        <img src="/images/login/tt1745960.jpg" alt="" loading="lazy" />
+        <img src="/images/login/tt1757678.jpg" alt="" loading="lazy" />
+        <img src="/images/login/tt26443616.jpg" alt="" loading="lazy" />
+        <img src="/images/login/tt30144839.jpg" alt="" loading="lazy" />
+        <img src="/images/login/tt30460310.jpg" alt="" loading="lazy" />
+        <img src="/images/login/tt30825738.jpg" alt="" loading="lazy" />
+        <img src="/images/login/tt34378301.jpg" alt="" loading="lazy" />
+        <img src="/images/login/tt37287335.jpg" alt="" loading="lazy" />
+      </div>
+      <div class="site-bg__overlay"></div>
+    </div>
     {!hideNav && (
       <header class="site-nav container">
         <a href={`/${locale}`} class="site-nav__brand" aria-label="EGY CINEMA home">
-          <span class="site-nav__brand-mark" aria-hidden="true"></span>
+          <img src="/logo.png" alt="EGY CINEMA" width="28" height="28" style="border-radius: 6px; display: block;" />
           EGY CINEMA
         </a>
         <nav aria-label="Primary">

@@ -30,7 +30,7 @@ export function buildOrganizationLd(): Record<string, unknown> {
     '@type': 'Organization',
     name: 'EGY CINEMA',
     url: SITE_URL,
-    logo: absoluteUrl('/favicon.svg'),
+    logo: absoluteUrl('/logo.png'),
     sameAs: ['https://github.com/Youssf-Mohamed/movie_app'],
   };
 }

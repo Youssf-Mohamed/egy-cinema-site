@@ -37,15 +37,15 @@
 :root {
   --nightfall:        #131313;
   --midnight:         #1B1C1C;
-  --midnight-hi:      #2A2A2A;
-  --ochre:            #D9A24B;
-  --ochre-soft:       #B8883A;
+  --midnight-hi:      #1F2020;
+  --ochre:            #FE2020;
+  --ochre-soft:       #E53935;
   --velvet:           #FE2020;
   --velvet-hi:        #E53935;
   --lantern:          #E4E2E1;
-  --smoke:            #8A8A8A;
+  --smoke:            #8F8D8B;
   --smoke-soft:       #5A5A5A;
-  --rule:             rgba(217, 162, 75, 0.30);
+  --rule:             rgba(53, 53, 53, 0.30);
   --rule-soft:        rgba(228, 226, 225, 0.10);
 
   --content-max:      720px;
@@ -84,9 +84,52 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  background: var(--nightfall);
+  position: relative;
+}
+
+/* Cinematic poster collage background — mirrors app login (3x3 grid, blur + dark overlay) */
+.site-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.site-bg__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 120%;
+  height: 120%;
+  transform: rotate(-2deg) translate(-5%, -5%);
+  opacity: 0.08;
+  filter: blur(2px) brightness(0.6);
+}
+
+.site-bg__grid img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.site-bg__overlay {
+  position: absolute;
+  inset: 0;
   background:
-    radial-gradient(1200px 600px at 50% -10%, rgba(217, 162, 75, 0.06), transparent 60%),
-    var(--nightfall);
+    radial-gradient(800px 400px at 50% 0%, rgba(254, 32, 32, 0.06), transparent 60%),
+    linear-gradient(180deg, rgba(19,19,19,0.7) 0%, rgba(19,19,19,0.95) 60%, var(--nightfall) 100%);
+}
+
+@media (max-width: 900px) {
+  .site-bg__grid { grid-template-columns: repeat(3, 1fr); opacity: 0.06; }
+  .site-bg__grid img { height: 180px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-bg__grid { transform: none; filter: blur(1px) brightness(0.5); }
 }
 
 a {
