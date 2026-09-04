@@ -1,0 +1,105 @@
+---
+export const prerender = false;
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { getSupabase, fetchAllReleasesForAdmin, type LatestRelease } from '../../../lib/supabase.ts';
+
+const { cookies, redirect } = Astro;
+const accessToken = cookies.get('sb-access-token')?.value;
+if (!accessToken) return redirect('/admin/login');
+
+const supabase = getSupabase();
+const { data, error } = await supabase.auth.setSession({
+  access_token: accessToken,
+  refresh_token: cookies.get('sb-refresh-token')?.value ?? '',
+});
+if (error || !data.user) {
+  cookies.delete('sb-access-token', { path: '/' });
+  cookies.delete('sb-refresh-token', { path: '/' });
+  return redirect('/admin/login');
+}
+const { data: adminRow } = await supabase
+  .from('admins')
+  .select('user_id')
+  .eq('user_id', data.user.id)
+  .maybeSingle();
+if (!adminRow) return redirect('/admin/login?error=not_admin');
+
+const releases = await fetchAllReleasesForAdmin();
+const userEmail = data.user.email ?? null;
+
+const url = new URL(Astro.request.url);
+const justSaved = url.searchParams.get('saved') === '1';
+const justDeleted = url.searchParams.get('deleted') === '1';
+
+const dateFmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+<AdminLayout title="Releases" userEmail={userEmail}>
+  <div class="admin">
+    <div class="container">
+      <div class="admin__head">
+        <div>
+          <h1 class="admin__title">Releases</h1>
+          <p class="admin__subtitle">{releases.length} total</p>
+        </div>
+        <a class="btn-ticket" href="/admin/releases/new">+ New release</a>
+      </div>
+
+      {justSaved && <div class="form__success" style="margin-bottom: 16px;">Release saved.</div>}
+      {justDeleted && <div class="form__success" style="margin-bottom: 16px;">Release deleted.</div>}
+
+      {releases.length === 0 ? (
+        <p style="color: var(--smoke);">No releases yet. Click "+ New release" to create one.</p>
+      ) : (
+        <table class="releases-table">
+          <thead>
+            <tr>
+              <th>Version</th>
+              <th>Released</th>
+              <th>Status</th>
+              <th>Platforms</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {releases.map((r: LatestRelease) => {
+              const platforms = [
+                r.windows_download_url && 'Win',
+                r.mac_download_url && 'Mac',
+                r.linux_download_url && 'Linux',
+                r.android_download_url && 'Android',
+                r.ios_download_url && 'iOS',
+              ].filter(Boolean) as string[];
+              return (
+                <tr>
+                  <td><strong>v{r.min_version}</strong></td>
+                  <td>
+                    <time datetime={r.release_date} style="color: var(--smoke);">
+                      {dateFmt.format(new Date(r.release_date))}
+                    </time>
+                  </td>
+                  <td>
+                    {r.is_published
+                      ? <span class="badge badge--pub">Published</span>
+                      : <span class="badge badge--draft">Draft</span>}
+                    {r.policy === 'force_update' && <span class="badge badge--force">Force</span>}
+                  </td>
+                  <td style="font-family: var(--font-slate); font-size: 11px; color: var(--smoke);">
+                    {platforms.length > 0 ? platforms.join(' · ') : '—'}
+                  </td>
+                  <td style="text-align: end;">
+                    <a href={`/admin/releases/${r.id}`} style="font-family: var(--font-slate); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;">Edit</a>
+                    <form method="post" action="/api/admin/releases/delete" style="display: inline; margin-inline-start: 16px;" onsubmit="return confirm('Delete this release? This cannot be undone.');">
+                      <input type="hidden" name="id" value={r.id} />
+                      <button type="submit" class="link-button" style="color: #FF6B7A;">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+    </div>
+  </div>
+</AdminLayout>

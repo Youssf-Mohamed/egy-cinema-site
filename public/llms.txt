@@ -1,0 +1,53 @@
+# EGY CINEMA
+
+> Free Arabic-language streaming app for movies and TV shows on Windows, macOS, Linux, Android, and iOS. Built with Flutter, backed by Supabase.
+
+## What it is
+
+EGY CINEMA is a desktop and mobile streaming aggregator for Egyptian and Arab cinema enthusiasts. It pulls metadata from TMDB, indexes it in a custom Supabase database, and plays content through embedded players.
+
+- Audience: Arabic-speaking film and TV enthusiasts, primarily in Egypt and the wider Arab world
+- Languages: Arabic (default, RTL native) and English
+- Platforms: Windows, macOS, Linux, Android, iOS
+- Cost: Free, no subscription, no ads inside the player
+- Account: optional for browsing, required for watchlist, favorites, and Watch Together sync
+
+## Features
+
+- Watchlist: save titles to watch later, synced to your account
+- Favorites: bookmark films you love
+- Search: real-time, server-side, full title database
+- Recent history: pick up where you left off on any signed-in device
+- Watch Together: synchronized playback with a friend, both pause at the same second
+- Picture-in-Picture and zoom: watch while working, crop black bars
+- Arabic UI: right-to-left native, not translated
+
+## Stack
+
+- Client: Flutter (Cairo typography throughout)
+- Backend: Supabase (Postgres, Auth, Storage, Edge Functions, Realtime)
+- Metadata: TMDB API + custom OMDb proxy for IMDB IDs
+- Source: https://github.com/Youssf-Mohamed/movie_app
+
+## Downloads
+
+Latest version: https://egy-cinema.vercel.app/
+
+- Windows: https://egy-cinema.vercel.app/dl/windows
+- macOS: https://egy-cinema.vercel.app/dl/mac
+- Linux: https://egy-cinema.vercel.app/dl/linux
+- Android: https://egy-cinema.vercel.app/dl/android
+- iOS: https://egy-cinema.vercel.app/dl/ios
+
+## Changelog
+
+https://egy-cinema.vercel.app/changelog
+
+## Contact
+
+- GitHub: https://github.com/Youssf-Mohamed/movie_app
+- Issues: https://github.com/Youssf-Mohamed/movie_app/issues
+
+## Last updated
+
+2026-09-04

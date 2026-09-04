@@ -1,0 +1,36 @@
+---
+export const prerender = false;
+import { getSupabase } from '../../lib/supabase.ts';
+
+const { cookies, redirect } = Astro;
+const accessToken = cookies.get('sb-access-token')?.value;
+
+if (!accessToken) return redirect('/admin/login');
+
+const supabase = getSupabase();
+const { data, error } = await supabase.auth.setSession({
+  access_token: accessToken,
+  refresh_token: cookies.get('sb-refresh-token')?.value ?? '',
+});
+
+if (error || !data.user) {
+  cookies.delete('sb-access-token', { path: '/' });
+  cookies.delete('sb-refresh-token', { path: '/' });
+  return redirect('/admin/login');
+}
+
+const { data: adminRow } = await supabase
+  .from('admins')
+  .select('user_id')
+  .eq('user_id', data.user.id)
+  .maybeSingle();
+
+if (!adminRow) {
+  await supabase.auth.signOut();
+  cookies.delete('sb-access-token', { path: '/' });
+  cookies.delete('sb-refresh-token', { path: '/' });
+  return redirect('/admin/login?error=not_admin');
+}
+
+return redirect('/admin/releases');
+---

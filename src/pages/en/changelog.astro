@@ -1,0 +1,57 @@
+---
+import Base from '../../layouts/Base.astro';
+import { t } from '../../i18n/ui';
+import { fetchPublishedReleases } from '../../lib/supabase';
+import { buildBreadcrumbLd } from '../../lib/seo';
+
+const locale = 'en' as const;
+const releases = await fetchPublishedReleases();
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const breadcrumbLd = buildBreadcrumbLd(locale, [
+  { name: 'EGY CINEMA', path: '/' },
+  { name: t(locale, 'changelog.title'), path: '/changelog' },
+]);
+---
+
+<Base
+  locale={locale}
+  title={t(locale, 'changelog.title')}
+  description={`${t(locale, 'site.name')} — ${t(locale, 'changelog.title')}`}
+  path="/changelog"
+  jsonLd={[breadcrumbLd]}
+>
+  <section class="hero" style="padding: 64px 0 32px;">
+    <div class="container container--narrow">
+      <p class="hero__eyebrow">{t(locale, 'nav.changelog')}</p>
+      <h1 class="hero__title" style="font-size: clamp(2.5rem, 6vw, 4rem);">{t(locale, 'changelog.title')}</h1>
+      <p class="hero__tagline" style="margin-bottom: 0;">{t(locale, 'changelog.lead')}</p>
+    </div>
+  </section>
+
+  <section style="padding-top: 32px;">
+    <div class="container container--narrow">
+      {releases.length === 0 ? (
+        <p style="color: var(--smoke);">{t(locale, 'changelog.empty')}</p>
+      ) : (
+        <div class="changelog-list">
+          {releases.map((r) => (
+            <article class="changelog-release">
+              <header class="changelog-release__head">
+                <span class="changelog-release__version">v{r.min_version}</span>
+                <time class="changelog-release__date" datetime={r.release_date}>
+                  {dateFormatter.format(new Date(r.release_date))}
+                </time>
+              </header>
+              {r.notes_html ? (
+                <div class="changelog-release__body" set:html={r.notes_html} />
+              ) : (
+                <p style="color: var(--smoke); font-style: italic;">No release notes for this version.</p>
+              )}
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Base>

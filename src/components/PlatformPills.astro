@@ -1,0 +1,24 @@
+---
+import type { Locale } from '../i18n/ui';
+import { t } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  platforms: Array<'windows' | 'mac' | 'linux' | 'android' | 'ios'>;
+  activePlatform?: 'windows' | 'mac' | 'linux' | 'android' | 'ios';
+}
+
+const { locale, platforms, activePlatform } = Astro.props;
+const allPlatforms: Array<'windows' | 'mac' | 'linux' | 'android' | 'ios'> = ['windows', 'mac', 'linux', 'android', 'ios'];
+const visible = platforms.length > 0 ? platforms : allPlatforms;
+---
+
+<ul class="platform-pills" aria-label={t(locale, 'install.title')}>
+  {visible.map((p) => (
+    <li>
+      <span class={`platform-pill${activePlatform === p ? ' platform-pill--active' : ''}`}>
+        {t(locale, `install.platform.${p}`)}
+      </span>
+    </li>
+  ))}
+</ul>

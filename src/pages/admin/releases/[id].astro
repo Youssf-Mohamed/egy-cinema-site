@@ -1,0 +1,144 @@
+---
+export const prerender = false;
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { getSupabase } from '../../../lib/supabase';
+
+const { params, cookies, redirect } = Astro;
+const idParam = params.id;
+
+const accessToken = cookies.get('sb-access-token')?.value;
+if (!accessToken) return redirect('/admin/login');
+const supabase = getSupabase();
+const { data, error } = await supabase.auth.setSession({
+  access_token: accessToken,
+  refresh_token: cookies.get('sb-refresh-token')?.value ?? '',
+});
+if (error || !data.user) return redirect('/admin/login');
+
+const userEmail = data.user.email ?? null;
+
+const isNew = idParam === 'new' || !idParam;
+let existing: Record<string, unknown> | null = null;
+
+if (!isNew) {
+  const { data: row, error: rowErr } = await supabase
+    .from('app_config')
+    .select('*')
+    .eq('id', idParam)
+    .maybeSingle();
+  if (rowErr || !row) {
+    return redirect('/admin/releases?error=not_found');
+  }
+  existing = row;
+}
+
+const url = new URL(Astro.request.url);
+const errorParam = url.searchParams.get('error');
+
+const min_version = (existing?.min_version as string) ?? '';
+const policy = (existing?.policy as string) ?? '';
+const notes_markdown = (existing?.notes_markdown as string) ?? '';
+const is_published = Boolean(existing?.is_published ?? true);
+const is_force_update = (existing?.policy as string) === 'force_update';
+const release_date = ((existing?.release_date as string) ?? new Date().toISOString()).slice(0, 10);
+const download_url = (existing?.download_url as string) ?? '';
+const windows_download_url = (existing?.windows_download_url as string) ?? '';
+const mac_download_url = (existing?.mac_download_url as string) ?? '';
+const linux_download_url = (existing?.linux_download_url as string) ?? '';
+const android_download_url = (existing?.android_download_url as string) ?? '';
+const ios_download_url = (existing?.ios_download_url as string) ?? '';
+---
+
+<AdminLayout title={isNew ? 'New release' : `Edit v${min_version}`} userEmail={userEmail}>
+  <div class="admin">
+    <div class="container">
+      <div class="admin__head">
+        <div>
+          <h1 class="admin__title">{isNew ? 'New release' : `Edit v${min_version}`}</h1>
+          <p class="admin__subtitle">
+            <a href="/admin/releases">← Back to releases</a>
+          </p>
+        </div>
+      </div>
+
+      {errorParam === 'save_failed' && (
+        <div class="form__error" style="margin-bottom: 16px;">Couldn't save the release. Check the form and try again.</div>
+      )}
+
+      <form method="post" action="/api/admin/releases/save" class="form">
+        {!isNew && <input type="hidden" name="id" value={idParam} />}
+
+        <div class="form__row">
+          <div class="form__field">
+            <label class="form__label" for="min_version">Version (e.g. 1.2.0)</label>
+            <input class="form__input" type="text" id="min_version" name="min_version" value={min_version} required />
+          </div>
+          <div class="form__field">
+            <label class="form__label" for="release_date">Release date</label>
+            <input class="form__input" type="date" id="release_date" name="release_date" value={release_date} required />
+          </div>
+        </div>
+
+        <div class="form__field">
+          <label class="form__label" for="policy">Policy code (optional)</label>
+          <input class="form__input" type="text" id="policy" name="policy" value={policy} placeholder="e.g. force_update" />
+        </div>
+
+        <div class="form__field">
+          <label class="form__label" for="notes_markdown">Release notes (Markdown)</label>
+          <textarea class="form__textarea" id="notes_markdown" name="notes_markdown" rows="14">{notes_markdown}</textarea>
+        </div>
+
+        <fieldset style="border: 0; padding: 0; margin: 0; display: flex; gap: 32px; flex-wrap: wrap;">
+          <label class="form__check">
+            <input type="checkbox" name="is_published" checked={is_published} />
+            Published
+          </label>
+          <label class="form__check">
+            <input type="checkbox" name="is_force_update" checked={is_force_update} />
+            Force update
+          </label>
+        </fieldset>
+
+        <h2 style="font-size: 1.125rem; margin: 24px 0 8px; padding-top: 24px; border-top: 1px solid var(--rule-soft);">Platform download URLs</h2>
+
+        <div class="form__field">
+          <label class="form__label" for="download_url">Generic download URL (fallback)</label>
+          <input class="form__input" type="url" id="download_url" name="download_url" value={download_url} />
+        </div>
+
+        <div class="form__row">
+          <div class="form__field">
+            <label class="form__label" for="windows_download_url">Windows</label>
+            <input class="form__input" type="url" id="windows_download_url" name="windows_download_url" value={windows_download_url} />
+          </div>
+          <div class="form__field">
+            <label class="form__label" for="mac_download_url">macOS</label>
+            <input class="form__input" type="url" id="mac_download_url" name="mac_download_url" value={mac_download_url} />
+          </div>
+        </div>
+
+        <div class="form__row">
+          <div class="form__field">
+            <label class="form__label" for="linux_download_url">Linux</label>
+            <input class="form__input" type="url" id="linux_download_url" name="linux_download_url" value={linux_download_url} />
+          </div>
+          <div class="form__field">
+            <label class="form__label" for="android_download_url">Android</label>
+            <input class="form__input" type="url" id="android_download_url" name="android_download_url" value={android_download_url} />
+          </div>
+        </div>
+
+        <div class="form__field">
+          <label class="form__label" for="ios_download_url">iOS</label>
+          <input class="form__input" type="url" id="ios_download_url" name="ios_download_url" value={ios_download_url} />
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 16px;">
+          <button type="submit" class="btn-ticket">Save release</button>
+          <a href="/admin/releases" class="btn-ticket btn-ticket--secondary">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</AdminLayout>

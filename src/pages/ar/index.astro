@@ -1,0 +1,183 @@
+---
+import Base from '../../layouts/Base.astro';
+import MarqueeRule from '../../components/MarqueeRule.astro';
+import DownloadButton from '../../components/DownloadButton.astro';
+import PlatformPills from '../../components/PlatformPills.astro';
+import { t, featureT, type FeatureKey } from '../../i18n/ui';
+import { fetchLatestRelease, platformUrl, type PlatformKey } from '../../lib/supabase';
+import { buildOrganizationLd, buildSoftwareAppLd, buildFaqLd } from '../../lib/seo';
+
+const locale = 'ar' as const;
+const release = await fetchLatestRelease();
+
+const version = release?.min_version ?? '—';
+const releaseDate = release?.release_date ?? new Date().toISOString();
+const windowsUrl = release ? (platformUrl(release, 'windows_download_url') ?? platformUrl(release, 'download_url')) : null;
+const primaryDownloadHref = windowsUrl ?? `/${locale}#install`;
+
+const orgLd = buildOrganizationLd();
+const appLd = release ? buildSoftwareAppLd(locale, version, releaseDate, windowsUrl) : null;
+
+const faqItems = [
+  { q: t(locale, 'faq.01.q'), a: t(locale, 'faq.01.a') },
+  { q: t(locale, 'faq.02.q'), a: t(locale, 'faq.02.a') },
+  { q: t(locale, 'faq.03.q'), a: t(locale, 'faq.03.a') },
+  { q: t(locale, 'faq.04.q'), a: t(locale, 'faq.04.a') },
+  { q: t(locale, 'faq.05.q'), a: t(locale, 'faq.05.a') },
+];
+const faqLd = buildFaqLd(faqItems);
+
+const formattedDate = release
+  ? new Date(release.release_date).toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' })
+  : '—';
+
+const platforms: PlatformKey[] = ['windows_download_url', 'mac_download_url', 'linux_download_url', 'android_download_url', 'ios_download_url'];
+const platformList: Array<'windows' | 'mac' | 'linux' | 'android' | 'ios'> = ['windows', 'mac', 'linux', 'android', 'ios'];
+const platformUrlMap: Record<'windows' | 'mac' | 'linux' | 'android' | 'ios', string | null> = {
+  windows: release ? (platformUrl(release, 'windows_download_url') ?? platformUrl(release, 'download_url')) : null,
+  mac:     release ? platformUrl(release, 'mac_download_url') : null,
+  linux:   release ? platformUrl(release, 'linux_download_url') : null,
+  android: release ? platformUrl(release, 'android_download_url') : null,
+  ios:     release ? platformUrl(release, 'ios_download_url') : null,
+};
+
+void platforms;
+---
+
+<Base
+  locale={locale}
+  title={t(locale, 'site.name')}
+  description={t(locale, 'site.description')}
+  path="/"
+  jsonLd={[orgLd, appLd, faqLd].filter(Boolean) as Record<string, unknown>[]}
+>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container container--narrow">
+      <p class="hero__eyebrow">{t(locale, 'hero.eyebrow')}</p>
+      <h1 id="hero-title" class="hero__title">{t(locale, 'hero.title')}</h1>
+      <p class="hero__tagline">{t(locale, 'hero.tagline')}</p>
+
+      <div class="hero__meta" aria-label="Release info">
+        <div>
+          <strong>{t(locale, 'hero.version.label')}</strong>
+          v{version}
+        </div>
+        <div>
+          <strong>{t(locale, 'hero.released.label')}</strong>
+          {formattedDate}
+        </div>
+      </div>
+
+      <DownloadButton
+        locale={locale}
+        href={primaryDownloadHref}
+        platform="windows"
+        label={t(locale, 'hero.cta')}
+      />
+      <p class="hero__subline">{t(locale, 'hero.subline')}</p>
+
+      <PlatformPills locale={locale} platforms={platformList} activePlatform="windows" />
+    </div>
+  </section>
+
+  <section aria-labelledby="what-title">
+    <div class="container">
+      <MarqueeRule eyebrow={t(locale, 'what.title')} />
+      <div class="container--narrow" style="padding: 0;">
+        <h2 id="what-title">{t(locale, 'what.heading')}</h2>
+        <p style="color: var(--smoke); font-size: 1.0625rem; max-width: 600px;">{t(locale, 'what.lead')}</p>
+      </div>
+
+      <div class="cards-3">
+        <article class="card">
+          <h3 class="card__title">{t(locale, 'what.card.movies.title')}</h3>
+          <p class="card__body">{t(locale, 'what.card.movies.body')}</p>
+        </article>
+        <article class="card">
+          <h3 class="card__title">{t(locale, 'what.card.tv.title')}</h3>
+          <p class="card__body">{t(locale, 'what.card.tv.body')}</p>
+        </article>
+        <article class="card">
+          <h3 class="card__title">{t(locale, 'what.card.together.title')}</h3>
+          <p class="card__body">{t(locale, 'what.card.together.body')}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" aria-labelledby="features-title">
+    <div class="container">
+      <MarqueeRule eyebrow={t(locale, 'features.eyebrow')} />
+      <div class="container--narrow" style="padding: 0;">
+        <h2 id="features-title">{t(locale, 'features.title')}</h2>
+        <p style="color: var(--smoke); font-size: 1.0625rem; max-width: 600px;">{t(locale, 'features.lead')}</p>
+      </div>
+
+      <div class="features-grid">
+        {(['01', '02', '03', '04', '05', '06'] as FeatureKey[]).map((num) => (
+          <article class="feature">
+            <span class="feature__ordinal">{num} / 06</span>
+            <h3 class="feature__title">{featureT(locale, num, 'title')}</h3>
+            <p class="feature__body">{featureT(locale, num, 'body')}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="install" aria-labelledby="install-title">
+    <div class="container">
+      <MarqueeRule eyebrow={t(locale, 'install.eyebrow')} />
+      <div class="container--narrow" style="padding: 0;">
+        <h2 id="install-title">{t(locale, 'install.title')}</h2>
+        <p style="color: var(--smoke); font-size: 1.0625rem; max-width: 600px;">{t(locale, 'install.lead')}</p>
+      </div>
+
+      <div class="platform-grid">
+        {platformList.map((p) => {
+          const url = platformUrlMap[p];
+          const isPrimary = p === 'windows';
+          return (
+            <article class={`platform-card${url ? '' : ' platform-card--disabled'}`}>
+              <p class="platform-card__name">{t(locale, `install.platform.${p}`)}</p>
+              <p class="platform-card__version">
+                <strong>v{version}</strong><br/>
+                {formattedDate}
+              </p>
+              <div class="platform-card__cta">
+                <DownloadButton
+                  locale={locale}
+                  href={url ?? '#'}
+                  platform={p}
+                  disabled={!url}
+                  variant={isPrimary ? 'primary' : 'secondary'}
+                />
+              </div>
+            </article>
+          );
+        })}
+      </div>
+
+      <p style="font-family: var(--font-slate); font-size: 12px; color: var(--smoke); margin-top: 24px; letter-spacing: 0.04em;">
+        <a href="https://github.com/Youssf-Mohamed/movie_app/issues" rel="noopener">{t(locale, 'install.reportBroken')}</a>
+      </p>
+    </div>
+  </section>
+
+  <section aria-labelledby="faq-title">
+    <div class="container">
+      <MarqueeRule eyebrow={t(locale, 'faq.eyebrow')} />
+      <div class="container--narrow" style="padding: 0;">
+        <h2 id="faq-title">{t(locale, 'faq.title')}</h2>
+        <div class="faq-list">
+          {faqItems.map((it) => (
+            <article class="faq-item">
+              <h3 class="faq-item__q">{it.q}</h3>
+              <p class="faq-item__a">{it.a}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

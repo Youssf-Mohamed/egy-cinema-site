@@ -1,0 +1,26 @@
+{
+  "name": "egy-cinema-site",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/sitemap": "^3.6.0",
+    "@astrojs/vercel": "^8.2.7",
+    "@fontsource/cairo": "^5.2.5",
+    "@fontsource/ibm-plex-mono": "^5.2.5",
+    "@supabase/supabase-js": "^2.50.0",
+    "@types/markdown-it": "^14.1.2",
+    "astro": "^5.13.0",
+    "markdown-it": "^14.1.0",
+    "typescript": "^5.7.2"
+  }
+}

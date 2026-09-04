@@ -1,0 +1,28 @@
+---
+interface Props {
+  eyebrow: string;
+  bare?: boolean;
+  id?: string;
+}
+
+const { eyebrow, bare, id } = Astro.props;
+---
+
+{bare ? (
+  <hr class="marquee-rule" id={id} />
+) : (
+  <div class="marquee-rule-wrap" id={id}>
+    <hr class="marquee-rule" />
+    <span class="marquee-rule__label">{eyebrow}</span>
+  </div>
+)}
+
+<style>
+  .marquee-rule-wrap {
+    position: relative;
+    margin: 0 0 32px;
+  }
+  .marquee-rule {
+    margin: 0;
+  }
+</style>

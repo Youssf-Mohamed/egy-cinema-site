@@ -1,0 +1,80 @@
+---
+import '../styles/global.css';
+import '@fontsource/cairo/400.css';
+import '@fontsource/cairo/600.css';
+import '@fontsource/cairo/700.css';
+import '@fontsource/cairo/900.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+
+import type { Locale } from '../i18n/ui';
+import { localeDir } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  userEmail?: string | null;
+}
+
+const { title, userEmail } = Astro.props;
+const locale: Locale = 'en';
+const dir = localeDir[locale];
+---
+
+<!doctype html>
+<html lang={locale} dir={dir}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0E1320" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} — EGY CINEMA Admin</title>
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body>
+    <header class="site-nav container">
+      <a href="/admin" class="site-nav__brand" aria-label="EGY CINEMA admin">
+        <span class="site-nav__brand-mark" aria-hidden="true"></span>
+        EGY CINEMA
+      </a>
+      <nav aria-label="Admin">
+        <ul class="site-nav__links">
+          {userEmail && (
+            <>
+              <li>
+                <a href="/en" target="_blank" rel="noopener">View site →</a>
+              </li>
+              <li style="color: var(--smoke); font-family: var(--font-slate); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;">
+                {userEmail}
+              </li>
+              <li>
+                <form method="post" action="/api/admin/logout" style="display: inline;">
+                  <button type="submit" class="link-button">Sign out</button>
+                </form>
+              </li>
+            </>
+          )}
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  .link-button {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--smoke);
+    font: inherit;
+    font-family: var(--font-slate);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    cursor: pointer;
+  }
+  .link-button:hover { color: var(--ochre); }
+</style>
