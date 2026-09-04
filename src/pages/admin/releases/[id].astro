@@ -47,6 +47,12 @@ const mac_download_url = (existing?.mac_download_url as string) ?? '';
 const linux_download_url = (existing?.linux_download_url as string) ?? '';
 const android_download_url = (existing?.android_download_url as string) ?? '';
 const ios_download_url = (existing?.ios_download_url as string) ?? '';
+
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL as string;
+const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY as string;
+
+// Helper to check if URL is a storage upload
+const isStorageUrl = (u: string) => u.includes('/storage/v1/object/public/releases/');
 ---
 
 <AdminLayout title={isNew ? 'New release' : `Edit v${min_version}`} userEmail={userEmail}>
@@ -65,7 +71,7 @@ const ios_download_url = (existing?.ios_download_url as string) ?? '';
         <div class="form__error" style="margin-bottom: 16px;">Couldn't save the release. Check the form and try again.</div>
       )}
 
-      <form method="post" action="/api/admin/releases/save" class="form">
+      <form id="release-form" method="post" action="/api/admin/releases/save" class="form" enctype="multipart/form-data">
         {!isNew && <input type="hidden" name="id" value={idParam} />}
 
         <div class="form__row">
@@ -100,7 +106,47 @@ const ios_download_url = (existing?.ios_download_url as string) ?? '';
           </label>
         </fieldset>
 
-        <h2 style="font-size: 1.125rem; margin: 24px 0 8px; padding-top: 24px; border-top: 1px solid var(--rule-soft);">Platform download URLs</h2>
+        <h2 style="font-size: 1.125rem; margin: 24px 0 8px; padding-top: 24px; border-top: 1px solid var(--rule-soft);">Windows — upload .zip</h2>
+        <p style="font-size: 13px; color: var(--smoke); margin: 0 0 12px;">Upload a .zip for Windows. This will be uploaded directly to storage and the download link will be set automatically. Large files are supported (bypasses Vercel limit).</p>
+
+        {windows_download_url && (
+          <div style="font-size: 13px; color: var(--smoke); margin-bottom: 8px; word-break: break-all;">
+            Current: <a href={windows_download_url} target="_blank" rel="noopener">{isStorageUrl(windows_download_url) ? 'Uploaded file' : windows_download_url}</a>
+            {isStorageUrl(windows_download_url) && <span style="margin-left: 8px; color: #6EE2A1;">● stored</span>}
+          </div>
+        )}
+
+        <div class="form__field">
+          <label class="form__label" for="windows_file">Upload Windows .zip</label>
+          <input class="form__input" type="file" id="windows_file" name="windows_file" accept=".zip,.exe,.msi,application/zip,application/x-zip-compressed" />
+          <span style="font-size: 11px; color: var(--smoke);">Accepted: .zip only (or .exe/.msi). Max 500 MB.</span>
+        </div>
+        <div class="form__field">
+          <label class="form__label" for="windows_download_url">Or paste Windows URL (fallback if no file uploaded)</label>
+          <input class="form__input" type="url" id="windows_download_url" name="windows_download_url" value={windows_download_url} placeholder="https://..." />
+        </div>
+
+        <h2 style="font-size: 1.125rem; margin: 24px 0 8px; padding-top: 24px; border-top: 1px solid var(--rule-soft);">Android — upload .apk</h2>
+        <p style="font-size: 13px; color: var(--smoke); margin: 0 0 12px;">Upload an .apk for Android. Direct upload to storage.</p>
+
+        {android_download_url && (
+          <div style="font-size: 13px; color: var(--smoke); margin-bottom: 8px; word-break: break-all;">
+            Current: <a href={android_download_url} target="_blank" rel="noopener">{isStorageUrl(android_download_url) ? 'Uploaded file' : android_download_url}</a>
+            {isStorageUrl(android_download_url) && <span style="margin-left: 8px; color: #6EE2A1;">● stored</span>}
+          </div>
+        )}
+
+        <div class="form__field">
+          <label class="form__label" for="android_file">Upload Android .apk</label>
+          <input class="form__input" type="file" id="android_file" name="android_file" accept=".apk,application/vnd.android.package-archive" />
+          <span style="font-size: 11px; color: var(--smoke);">Accepted: .apk only. Max 500 MB.</span>
+        </div>
+        <div class="form__field">
+          <label class="form__label" for="android_download_url">Or paste Android URL (fallback if no file uploaded)</label>
+          <input class="form__input" type="url" id="android_download_url" name="android_download_url" value={android_download_url} placeholder="https://..." />
+        </div>
+
+        <h2 style="font-size: 1.125rem; margin: 24px 0 8px; padding-top: 24px; border-top: 1px solid var(--rule-soft);">Other platforms — URL only</h2>
 
         <div class="form__field">
           <label class="form__label" for="download_url">Generic download URL (fallback)</label>
@@ -109,36 +155,140 @@ const ios_download_url = (existing?.ios_download_url as string) ?? '';
 
         <div class="form__row">
           <div class="form__field">
-            <label class="form__label" for="windows_download_url">Windows</label>
-            <input class="form__input" type="url" id="windows_download_url" name="windows_download_url" value={windows_download_url} />
-          </div>
-          <div class="form__field">
-            <label class="form__label" for="mac_download_url">macOS</label>
+            <label class="form__label" for="mac_download_url">macOS URL</label>
             <input class="form__input" type="url" id="mac_download_url" name="mac_download_url" value={mac_download_url} />
           </div>
-        </div>
-
-        <div class="form__row">
           <div class="form__field">
-            <label class="form__label" for="linux_download_url">Linux</label>
+            <label class="form__label" for="linux_download_url">Linux URL</label>
             <input class="form__input" type="url" id="linux_download_url" name="linux_download_url" value={linux_download_url} />
-          </div>
-          <div class="form__field">
-            <label class="form__label" for="android_download_url">Android</label>
-            <input class="form__input" type="url" id="android_download_url" name="android_download_url" value={android_download_url} />
           </div>
         </div>
 
         <div class="form__field">
-          <label class="form__label" for="ios_download_url">iOS</label>
+          <label class="form__label" for="ios_download_url">iOS URL</label>
           <input class="form__input" type="url" id="ios_download_url" name="ios_download_url" value={ios_download_url} />
         </div>
 
+        <div id="upload-status" style="display: none; padding: 12px; background: var(--midnight); border: 1px solid var(--rule); border-radius: 3px; font-size: 13px; color: var(--lantern);"></div>
+
         <div style="display: flex; gap: 12px; margin-top: 16px;">
-          <button type="submit" class="btn-ticket">Save release</button>
+          <button type="submit" id="save-btn" class="btn-ticket">Save release</button>
           <a href="/admin/releases" class="btn-ticket btn-ticket--secondary">Cancel</a>
         </div>
       </form>
     </div>
   </div>
+
+  <script define:vars={{ supabaseUrl, supabaseAnonKey, accessToken }}>
+    const form = document.getElementById('release-form');
+    const saveBtn = document.getElementById('save-btn');
+    const statusEl = document.getElementById('upload-status');
+    const windowsFileInput = document.getElementById('windows_file');
+    const androidFileInput = document.getElementById('android_file');
+
+    function showStatus(msg, isError = false) {
+      statusEl.style.display = 'block';
+      statusEl.style.color = isError ? '#FF6B7A' : 'var(--lantern)';
+      statusEl.style.borderColor = isError ? 'rgba(255,107,122,0.3)' : 'var(--rule)';
+      statusEl.textContent = msg;
+    }
+
+    function hideStatus() {
+      statusEl.style.display = 'none';
+    }
+
+    async function uploadToStorage(file, version, platform) {
+      const safeVersion = (version || 'untitled').replace(/[^a-zA-Z0-9._-]/g, '_');
+      const ext = file.name.split('.').pop() || (platform === 'windows' ? 'zip' : 'apk');
+      const fileName = `${platform}-${Date.now()}.${ext}`;
+      const objectPath = `releases/${safeVersion}/${fileName}`;
+
+      showStatus(`Uploading ${platform} file: ${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)...`);
+
+      const res = await fetch(`${supabaseUrl}/storage/v1/object/releases/${objectPath}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'apikey': supabaseAnonKey,
+          'x-upsert': 'true',
+        },
+        body: file,
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(`${platform} upload failed (${res.status}): ${err}`);
+      }
+
+      const publicUrl = `${supabaseUrl}/storage/v1/object/public/releases/${objectPath}`;
+      return publicUrl;
+    }
+
+    form?.addEventListener('submit', async (e) => {
+      const hasWindowsFile = windowsFileInput?.files?.length > 0;
+      const hasAndroidFile = androidFileInput?.files?.length > 0;
+
+      if (!hasWindowsFile && !hasAndroidFile) {
+        return;
+      }
+
+      e.preventDefault();
+
+      const versionInput = document.getElementById('min_version');
+      const version = versionInput?.value?.trim();
+      if (!version) {
+        showStatus('Please enter a version first.', true);
+        return;
+      }
+
+      saveBtn.disabled = true;
+      const originalText = saveBtn.textContent;
+      saveBtn.textContent = 'Uploading...';
+      saveBtn.style.opacity = '0.7';
+
+      try {
+        if (hasWindowsFile) {
+          const file = windowsFileInput.files[0];
+          if (file.size > 524288000) throw new Error('Windows file too large (max 500 MB)');
+          const url = await uploadToStorage(file, version, 'windows');
+          document.getElementById('windows_download_url').value = url;
+          showStatus(`Windows file uploaded: ${file.name}`);
+        }
+
+        if (hasAndroidFile) {
+          const file = androidFileInput.files[0];
+          if (file.size > 524288000) throw new Error('Android file too large (max 500 MB)');
+          const url = await uploadToStorage(file, version, 'android');
+          document.getElementById('android_download_url').value = url;
+          showStatus(hasWindowsFile ? `Both files uploaded. Saving...` : `Android file uploaded: ${file.name}. Saving...`);
+        }
+
+        // Now submit the form normally via fetch
+        saveBtn.textContent = 'Saving...';
+        const formData = new FormData(form);
+        // Remove file inputs from formData to avoid sending them to save endpoint (they are already uploaded)
+        formData.delete('windows_file');
+        formData.delete('android_file');
+
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (res.redirected) {
+          window.location.href = res.url;
+        } else if (res.ok) {
+          window.location.href = '/admin/releases?saved=1';
+        } else {
+          const text = await res.text();
+          throw new Error(`Save failed: ${text.slice(0, 300)}`);
+        }
+      } catch (err) {
+        showStatus(err.message || String(err), true);
+        saveBtn.disabled = false;
+        saveBtn.textContent = originalText;
+        saveBtn.style.opacity = '1';
+      }
+    });
+  </script>
 </AdminLayout>
