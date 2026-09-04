@@ -149,6 +149,65 @@ void platforms;
     </div>
   </section>
 
+  <section aria-labelledby="preview-title">
+    <div class="container">
+      <div class="section-card">
+        <MarqueeRule eyebrow={t(locale, 'preview.eyebrow')} />
+        <div class="container--narrow" style="padding: 0;">
+          <h2 id="preview-title">{t(locale, 'preview.title')}</h2>
+          <p style="color: var(--smoke); font-size: 1.0625rem; max-width: 600px;">{t(locale, 'preview.lead')}</p>
+        </div>
+        <div class="preview-grid">
+          <article class="preview-card">
+            <div class="preview-card__media">
+              <img src="/images/preview/preview-01-share.jpg" alt="Share What You Think" loading="lazy" decoding="async" />
+            </div>
+            <div class="preview-card__body">
+              <h3 class="preview-card__title">{t(locale, 'preview.01.title')}</h3>
+              <p class="preview-card__desc">{t(locale, 'preview.01.body')}</p>
+            </div>
+          </article>
+          <article class="preview-card">
+            <div class="preview-card__media">
+              <img src="/images/preview/preview-02-favorites.jpg" alt="Keep Your Favorites Close" loading="lazy" decoding="async" />
+            </div>
+            <div class="preview-card__body">
+              <h3 class="preview-card__title">{t(locale, 'preview.02.title')}</h3>
+              <p class="preview-card__desc">{t(locale, 'preview.02.body')}</p>
+            </div>
+          </article>
+          <article class="preview-card">
+            <div class="preview-card__media">
+              <img src="/images/preview/preview-03-save.jpg" alt="Save to Favorites" loading="lazy" decoding="async" />
+            </div>
+            <div class="preview-card__body">
+              <h3 class="preview-card__title">{t(locale, 'preview.03.title')}</h3>
+              <p class="preview-card__desc">{t(locale, 'preview.03.body')}</p>
+            </div>
+          </article>
+          <article class="preview-card">
+            <div class="preview-card__media">
+              <img src="/images/preview/preview-04-together.jpg" alt="Watch Together Anywhere" loading="lazy" decoding="async" />
+            </div>
+            <div class="preview-card__body">
+              <h3 class="preview-card__title">{t(locale, 'preview.04.title')}</h3>
+              <p class="preview-card__desc">{t(locale, 'preview.04.body')}</p>
+            </div>
+          </article>
+          <article class="preview-card">
+            <div class="preview-card__media">
+              <img src="/images/preview/preview-05-invite.jpg" alt="Invite up to 4 friends" loading="lazy" decoding="async" />
+            </div>
+            <div class="preview-card__body">
+              <h3 class="preview-card__title">{t(locale, 'preview.05.title')}</h3>
+              <p class="preview-card__desc">{t(locale, 'preview.05.body')}</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="install" aria-labelledby="install-title">
     <div class="container">
       <div class="section-card">
