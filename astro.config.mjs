@@ -7,6 +7,7 @@ import { defaultLocale, locales } from './src/i18n/ui.ts';
 
 export default defineConfig({
   site: 'https://egy-cinema.vercel.app',
+  output: 'server',
   trailingSlash: 'ignore',
   build: {
     format: 'directory',
