@@ -81,6 +81,21 @@ html {
   text-rendering: optimizeLegibility;
 }
 
+[dir="rtl"] {
+  line-height: 1.85;
+  letter-spacing: 0;
+}
+
+[dir="rtl"] p,
+[dir="rtl"] li,
+[dir="rtl"] .hero__tagline,
+[dir="rtl"] .card__body,
+[dir="rtl"] .feature__body,
+[dir="rtl"] .faq-item__a {
+  line-height: 1.85;
+  letter-spacing: 0;
+}
+
 html { background: var(--nightfall); }
 body {
   margin: 0;
@@ -262,10 +277,15 @@ a:hover, a:focus-visible {
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.4;
   letter-spacing: -0.01em;
   color: var(--lantern);
   margin: 0;
+}
+
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4 {
+  line-height: 1.7;
+  letter-spacing: 0;
 }
 
 h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; }
@@ -454,13 +474,21 @@ section {
   font-size: clamp(3.5rem, 10vw, 7rem);
   font-weight: 900;
   letter-spacing: -0.03em;
-  line-height: 0.95;
+  line-height: 1.1;
   margin: 0 0 24px;
   background: linear-gradient(180deg, var(--lantern) 0%, #C4B89E 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: var(--lantern);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  padding: 0 8px;
+}
+
+[dir="rtl"] .hero__title {
+  line-height: 1.45;
+  letter-spacing: 0;
 }
 
 .hero__tagline {

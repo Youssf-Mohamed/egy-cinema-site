@@ -137,9 +137,19 @@ const navLinks = [
               <li><a href={l.href}>{l.label}</a></li>
             ))}
             <li class="lang-switch" aria-label="Language switcher">
-              <a href={canonical} aria-current={locale === 'en' ? 'true' : 'false'} hreflang="en">EN</a>
+              <a
+                href={otherLocale === 'en' ? canonical : altHref}
+                aria-current={locale === 'en' ? 'true' : 'false'}
+                hreflang="en"
+                data-locale="en"
+              >EN</a>
               <span aria-hidden="true">·</span>
-              <a href={altHref} aria-current={locale === 'ar' ? 'true' : 'false'} hreflang="ar">AR</a>
+              <a
+                href={otherLocale === 'ar' ? altHref : canonical}
+                aria-current={locale === 'ar' ? 'true' : 'false'}
+                hreflang="ar"
+                data-locale="ar"
+              >AR</a>
             </li>
           </ul>
         </nav>
