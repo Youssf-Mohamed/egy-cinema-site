@@ -1,0 +1,212 @@
+---
+import type { Locale } from '../i18n/ui';
+import { t } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  /** Platform this report is about (e.g. "windows", "android", or "" for general). */
+  platform?: string;
+  /** Optional version string surfaced in the modal. */
+  version?: string;
+  /** Page URL the report originated from. */
+  pageUrl?: string;
+}
+
+const { locale, platform = '', version = '', pageUrl = '' } = Astro.props;
+const labels = {
+  title: t(locale, 'report.title'),
+  descriptionLabel: t(locale, 'report.description.label'),
+  descriptionPlaceholder: t(locale, 'report.description.placeholder'),
+  emailLabel: t(locale, 'report.email.label'),
+  emailPlaceholder: t(locale, 'report.email.placeholder'),
+  submit: t(locale, 'report.submit'),
+  cancel: t(locale, 'report.cancel'),
+  sending: t(locale, 'report.sending'),
+  success: t(locale, 'report.success'),
+  error: t(locale, 'report.error'),
+  close: t(locale, 'report.close'),
+};
+---
+
+<div class="report-modal" id="report-modal" role="dialog" aria-modal="true" aria-labelledby="report-modal-title" hidden>
+  <div class="report-modal__card" role="document">
+    <h2 class="report-modal__title" id="report-modal-title">{labels.title}</h2>
+    <p class="report-modal__meta" data-report-meta>
+      {platform ? `${platform.toUpperCase()}${version ? ` · v${version}` : ''}` : ''}
+    </p>
+
+    <div class="report-modal__success" data-report-success hidden>{labels.success}</div>
+    <div class="report-modal__error" data-report-error hidden>{labels.error}</div>
+
+    <form data-report-form>
+      <input type="hidden" name="platform" data-report-platform value={platform} />
+      <input type="hidden" name="page_url" data-report-page-url value={pageUrl} />
+
+      <div class="report-modal__field">
+        <label class="report-modal__label" for="report-description">{labels.descriptionLabel}</label>
+        <textarea
+          class="report-modal__textarea"
+          id="report-description"
+          name="description"
+          required
+          minlength="3"
+          maxlength="2000"
+          placeholder={labels.descriptionPlaceholder}
+        ></textarea>
+      </div>
+
+      <div class="report-modal__field">
+        <label class="report-modal__label" for="report-email">{labels.emailLabel}</label>
+        <input
+          class="report-modal__input"
+          id="report-email"
+          name="email"
+          type="email"
+          placeholder={labels.emailPlaceholder}
+        />
+      </div>
+
+      <div class="report-modal__actions">
+        <button type="button" class="btn-ticket btn-ticket--secondary" data-report-cancel>{labels.cancel}</button>
+        <button type="submit" class="btn-ticket" data-report-submit>{labels.submit}</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<dialog aria-hidden="true"></dialog>
+
+<script is:inline>
+  (function () {
+    const modal = document.getElementById('report-modal');
+    if (!modal) return;
+    const form = modal.querySelector('[data-report-form]');
+    const platformInput = modal.querySelector('[data-report-platform]');
+    const pageUrlInput = modal.querySelector('[data-report-page-url]');
+    const cancelBtn = modal.querySelector('[data-report-cancel]');
+    const submitBtn = modal.querySelector('[data-report-submit]');
+    const descEl = modal.querySelector('#report-description');
+    const emailEl = modal.querySelector('#report-email');
+    const successEl = modal.querySelector('[data-report-success]');
+    const errorEl = modal.querySelector('[data-report-error]');
+    const submitLabel = submitBtn ? submitBtn.textContent : '';
+    let lastFocus = null;
+
+    function open(platform, version) {
+      lastFocus = document.activeElement;
+      modal.hidden = false;
+      modal.setAttribute('aria-hidden', 'false');
+      const meta = modal.querySelector('[data-report-meta]');
+      if (meta) {
+        const parts = [];
+        if (platform) parts.push(platform.toUpperCase());
+        if (version) parts.push('v' + version);
+        meta.textContent = parts.join(' · ');
+      }
+      if (platformInput) platformInput.value = platform || '';
+      if (pageUrlInput) pageUrlInput.value = window.location.href;
+      if (descEl) descEl.value = '';
+      if (emailEl) emailEl.value = '';
+      successEl.hidden = true;
+      errorEl.hidden = true;
+      setTimeout(function () { descEl && descEl.focus(); }, 0);
+      document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+      modal.hidden = true;
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    document.addEventListener('click', function (e) {
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+      const trigger = target.closest('[data-report-trigger]');
+      if (trigger) {
+        e.preventDefault();
+        open(trigger.getAttribute('data-report-platform') || '', trigger.getAttribute('data-report-version') || '');
+        return;
+      }
+      if (target === modal) {
+        close();
+        return;
+      }
+      if (cancelBtn && (target === cancelBtn || target.closest('[data-report-cancel]'))) {
+        close();
+        return;
+      }
+      const closeAction = target.closest('[data-report-close]');
+      if (closeAction) {
+        close();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (modal.hidden) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        close();
+        return;
+      }
+      if (e.key === 'Tab') {
+        const focusables = modal.querySelectorAll(
+          'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled])'
+        );
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    });
+
+    if (form) {
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        if (!submitBtn) return;
+        const desc = descEl ? descEl.value.trim() : '';
+        if (desc.length < 3) {
+          if (errorEl) {
+            errorEl.textContent = (errorEl.dataset.label || errorEl.textContent);
+            errorEl.hidden = false;
+          }
+          return;
+        }
+        submitBtn.disabled = true;
+        const sendLabel = submitBtn.getAttribute('data-send-label') || submitLabel;
+        submitBtn.textContent = sendLabel;
+        try {
+          const res = await fetch('/api/public/report-broken-link', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              description: desc,
+              email: emailEl ? emailEl.value.trim() : '',
+              platform: platformInput ? platformInput.value : '',
+              page_url: pageUrlInput ? pageUrlInput.value : window.location.href,
+            }),
+          });
+          if (!res.ok) throw new Error('http_' + res.status);
+          if (successEl) successEl.hidden = false;
+          if (errorEl) errorEl.hidden = true;
+          setTimeout(function () { close(); }, 1600);
+        } catch (err) {
+          if (errorEl) {
+            errorEl.textContent = (errorEl.dataset.label || errorEl.textContent);
+            errorEl.hidden = false;
+          }
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = submitLabel;
+        }
+      });
+    }
+  })();
+</script>

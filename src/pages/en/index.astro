@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import MarqueeRule from '../../components/MarqueeRule.astro';
 import DownloadButton from '../../components/DownloadButton.astro';
 import PlatformPills from '../../components/PlatformPills.astro';
+import ReportBrokenLink from '../../components/ReportBrokenLink.astro';
 import { t, featureT, type FeatureKey } from '../../i18n/ui';
 import { fetchLatestRelease, platformUrl, type PlatformKey } from '../../lib/supabase';
 import { buildOrganizationLd, buildSoftwareAppLd, buildFaqLd } from '../../lib/seo';
@@ -254,7 +255,12 @@ void platforms;
         </div>
 
         <p style="font-family: var(--font-slate); font-size: 12px; color: var(--smoke); margin-top: 24px; letter-spacing: 0.04em;">
-          <a href="mailto:support@egy-cinema.app">{t(locale, 'install.reportBroken')}</a>
+          <a
+            href="#"
+            data-report-trigger
+            data-report-platform=""
+            data-report-version={version}
+          >{t(locale, 'install.reportBroken')}</a>
         </p>
       </div>
     </div>
@@ -278,6 +284,8 @@ void platforms;
       </div>
     </div>
   </section>
+
+  <ReportBrokenLink locale={locale} version={version} />
 
   <script is:inline define:vars={{ platformData }}>
     (function () {
