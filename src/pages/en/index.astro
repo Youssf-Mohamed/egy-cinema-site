@@ -75,7 +75,7 @@ void platforms;
             />
             <p class="hero__subline">{t(locale, 'hero.subline')}</p>
 
-            <PlatformPills locale={locale} platforms={platformList} activePlatform="windows" />
+            <PlatformPills locale={locale} platforms={platformList} activePlatform="android" />
           </div>
           <div class="hero__visual" aria-hidden="true">
             <div class="hero__window">
@@ -229,7 +229,6 @@ void platforms;
         <div class="platform-grid">
           {platformList.map((p) => {
             const url = platformUrlMap[p];
-            const isPrimary = p === 'windows';
             return (
               <article class={`platform-card${url ? '' : ' platform-card--disabled'}`}>
                 <p class="platform-card__name">{t(locale, `install.platform.${p}`)}</p>
@@ -243,7 +242,7 @@ void platforms;
                     href={url ?? '#'}
                     platform={p}
                     disabled={!url}
-                    variant={isPrimary ? 'primary' : 'secondary'}
+                    variant="primary"
                   />
                 </div>
               </article>
