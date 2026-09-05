@@ -13,6 +13,7 @@
   "hero.title": "EGY CINEMA",
   "hero.tagline": "Movies and TV on Windows and Android. Free.",
   "hero.cta": "Download for Windows",
+  "hero.cta.android": "Download for Android",
   "hero.cta.detect": "Detecting your platform",
   "hero.subline": "Also available for Android.",
   "hero.version.label": "Latest version",

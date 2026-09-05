@@ -39,6 +39,13 @@ const platformUrlMap: Record<'windows' | 'android', string | null> = {
 };
 const platformData = JSON.stringify(platformUrlMap);
 
+// Hero button label per pill (so the CTA text reflects the active platform)
+const heroButtonLabels: Record<'windows' | 'android', string> = {
+  windows: t(locale, 'hero.cta'),
+  android: t(locale, 'hero.cta.android'),
+};
+const heroButtonData = JSON.stringify(heroButtonLabels);
+
 void platforms;
 ---
 
@@ -286,9 +293,10 @@ void platforms;
 
   <ReportBrokenLink locale={locale} version={version} />
 
-  <script is:inline define:vars={{ platformData }}>
+  <script is:inline define:vars={{ platformData, heroButtonData }}>
     (function () {
       const urls = JSON.parse(platformData);
+      const labels = JSON.parse(heroButtonData);
       const fallback = Object.values(urls).find(Boolean) || '#';
       const buttons = document.querySelectorAll('a[data-download-id]');
       const byPlatform = new Map();
@@ -301,6 +309,15 @@ void platforms;
         if (!btn) return;
         btn.href = urls[platform] || fallback;
         btn.dataset.platform = platform;
+        if (labels && Object.prototype.hasOwnProperty.call(labels, platform)) {
+          for (const node of btn.childNodes) {
+            if (node.nodeType === Node.TEXT_NODE) {
+              node.nodeValue = labels[platform];
+              return;
+            }
+          }
+          btn.appendChild(document.createTextNode(labels[platform]));
+        }
       }
 
       function wirePills(group, onChange) {
