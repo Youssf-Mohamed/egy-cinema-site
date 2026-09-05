@@ -6,19 +6,33 @@ interface Props {
   locale: Locale;
   platforms: Array<'windows' | 'mac' | 'linux' | 'android' | 'ios'>;
   activePlatform?: 'windows' | 'mac' | 'linux' | 'android' | 'ios';
+  /** Selector for the download button the pills should switch. */
+  buttonId?: string;
 }
 
-const { locale, platforms, activePlatform } = Astro.props;
+const { locale, platforms, activePlatform, buttonId } = Astro.props;
 const allPlatforms: Array<'windows' | 'mac' | 'linux' | 'android' | 'ios'> = ['windows', 'mac', 'linux', 'android', 'ios'];
 const visible = platforms.length > 0 ? platforms : allPlatforms;
 ---
 
-<ul class="platform-pills" aria-label={t(locale, 'install.title')}>
-  {visible.map((p) => (
-    <li>
-      <span class={`platform-pill${activePlatform === p ? ' platform-pill--active' : ''}`}>
+<div
+  class="platform-pills"
+  role="tablist"
+  aria-label={t(locale, 'install.title')}
+  data-pills={buttonId ?? ''}
+>
+  {visible.map((p) => {
+    const isActive = activePlatform === p;
+    return (
+      <button
+        type="button"
+        class:list={['platform-pill', isActive ? 'platform-pill--active' : null]}
+        data-platform={p}
+        role="tab"
+        aria-selected={isActive ? 'true' : 'false'}
+      >
         {t(locale, `install.platform.${p}`)}
-      </span>
-    </li>
-  ))}
-</ul>
+      </button>
+    );
+  })}
+</div>

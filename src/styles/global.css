@@ -612,11 +612,27 @@ section {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--smoke);
+  cursor: pointer;
+  font-weight: 600;
+  transition: border-color 150ms var(--easing), color 150ms var(--easing), background 150ms var(--easing);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.platform-pill:hover {
+  border-color: var(--ochre);
+  color: var(--lantern);
+}
+
+.platform-pill:focus-visible {
+  outline: 2px solid var(--ochre);
+  outline-offset: 2px;
 }
 
 .platform-pill--active {
   border-color: var(--ochre);
   color: var(--ochre);
+  background: rgba(254, 32, 32, 0.12);
 }
 
 .cards-3 {
@@ -806,6 +822,11 @@ section {
 .platform-card--disabled {
   border-top-color: var(--rule-soft);
   opacity: 0.6;
+}
+
+.platform-card--focus {
+  border-color: var(--ochre);
+  box-shadow: 0 0 0 1px var(--ochre), 0 16px 40px rgba(0,0,0,0.35);
 }
 
 .platform-card--disabled .btn-ticket { background: transparent; border: 1px solid var(--rule-soft); }

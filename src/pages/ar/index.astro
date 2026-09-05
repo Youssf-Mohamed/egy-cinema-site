@@ -36,6 +36,7 @@ const platformUrlMap: Record<'windows' | 'android', string | null> = {
   windows: release ? (platformUrl(release, 'windows_download_url') ?? platformUrl(release, 'download_url')) : null,
   android: release ? (platformUrl(release, 'android_download_url') ?? platformUrl(release, 'download_url')) : null,
 };
+const platformData = JSON.stringify(platformUrlMap);
 
 void platforms;
 ---
@@ -68,6 +69,7 @@ void platforms;
             </div>
 
             <DownloadButton
+              id="hero-download"
               locale={locale}
               href={primaryDownloadHref}
               platform="windows"
@@ -75,7 +77,7 @@ void platforms;
             />
             <p class="hero__subline">{t(locale, 'hero.subline')}</p>
 
-            <PlatformPills locale={locale} platforms={platformList} activePlatform="android" />
+            <PlatformPills locale={locale} platforms={platformList} activePlatform="windows" buttonId="hero-download" />
           </div>
           <div class="hero__visual">
             <div class="hero__window">
@@ -221,11 +223,15 @@ void platforms;
           <p style="color: var(--smoke); font-size: 1.0625rem; max-width: 600px;">{t(locale, 'install.lead')}</p>
         </div>
 
-        <div class="platform-grid">
+        <div data-install-pills style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap; margin: 24px 0 8px;">
+          <PlatformPills locale={locale} platforms={platformList} activePlatform="android" buttonId="install-active" />
+        </div>
+
+        <div class="platform-grid" id="install-platform-grid">
           {platformList.map((p) => {
             const url = platformUrlMap[p];
             return (
-              <article class={`platform-card${url ? '' : ' platform-card--disabled'}`}>
+              <article class={`platform-card${url ? '' : ' platform-card--disabled'}`} data-platform-card={p}>
                 <p class="platform-card__name">{t(locale, `install.platform.${p}`)}</p>
                 <p class="platform-card__version">
                   <strong>v{version}</strong><br/>
@@ -233,6 +239,7 @@ void platforms;
                 </p>
                 <div class="platform-card__cta">
                   <DownloadButton
+                    id={`install-download-${p}`}
                     locale={locale}
                     href={url ?? '#'}
                     platform={p}
@@ -246,7 +253,7 @@ void platforms;
         </div>
 
         <p style="font-family: var(--font-slate); font-size: 12px; color: var(--smoke); margin-top: 24px; letter-spacing: 0.04em;">
-          <a href="https://github.com/Youssf-Mohamed/movie_app/issues" rel="noopener">{t(locale, 'install.reportBroken')}</a>
+          <a href="mailto:support@egy-cinema.app">{t(locale, 'install.reportBroken')}</a>
         </p>
       </div>
     </div>
@@ -270,4 +277,53 @@ void platforms;
       </div>
     </div>
   </section>
+
+  <script is:inline define:vars={{ platformData }}>
+    (function () {
+      const urls = JSON.parse(platformData);
+      const fallback = Object.values(urls).find(Boolean) || '#';
+      const buttons = document.querySelectorAll('a[data-download-id]');
+      const byPlatform = new Map();
+      buttons.forEach((btn) => {
+        if (btn.dataset.downloadId) byPlatform.set(btn.dataset.downloadId, btn);
+      });
+
+      function setActive(targetId, platform) {
+        const btn = byPlatform.get(targetId);
+        if (!btn) return;
+        btn.href = urls[platform] || fallback;
+        btn.dataset.platform = platform;
+      }
+
+      function wirePills(group, onChange) {
+        if (!group) return;
+        const pills = group.querySelectorAll('.platform-pill[data-platform]');
+        pills.forEach((pill) => {
+          pill.addEventListener('click', () => {
+            pills.forEach((p) => {
+              p.classList.toggle('platform-pill--active', p === pill);
+              p.setAttribute('aria-selected', p === pill ? 'true' : 'false');
+            });
+            onChange(pill.dataset.platform);
+          });
+        });
+      }
+
+      document.querySelectorAll('.platform-pills').forEach((group) => {
+        const targetId = group.dataset.pills;
+        if (!targetId) return;
+        wirePills(group, (platform) => setActive(targetId, platform));
+      });
+
+      const installGrid = document.getElementById('install-platform-grid');
+      const installPills = document.querySelector('[data-install-pills]');
+      if (installGrid && installPills) {
+        wirePills(installPills, (platform) => {
+          installGrid.querySelectorAll('[data-platform-card]').forEach((card) => {
+            card.classList.toggle('platform-card--focus', card.dataset.platformCard === platform);
+          });
+        });
+      }
+    })();
+  </script>
 </Base>

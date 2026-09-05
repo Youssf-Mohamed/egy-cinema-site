@@ -9,17 +9,24 @@ interface Props {
   label?: string;
   variant?: 'primary' | 'secondary';
   disabled?: boolean;
+  id?: string;
 }
 
-const { locale, href, platform, label, variant = 'primary', disabled } = Astro.props;
+const { locale, href, platform, label, variant = 'primary', disabled, id } = Astro.props;
 const buttonLabel = label ?? t(locale, 'install.download');
 const className = `btn-ticket${variant === 'secondary' ? ' btn-ticket--secondary' : ''}`;
 ---
 
 {disabled ? (
-  <span class={className} aria-disabled="true">{buttonLabel}</span>
+  <span class={className} aria-disabled="true" data-disabled="true">{buttonLabel}</span>
 ) : (
-  <a class={className} href={href} rel="noopener" data-platform={platform}>
+  <a
+    class={className}
+    href={href}
+    rel="noopener"
+    data-platform={platform}
+    {...(id ? { id, 'data-download-id': id } : { 'data-download-id': '' })}
+  >
     {buttonLabel}
   </a>
 )}
