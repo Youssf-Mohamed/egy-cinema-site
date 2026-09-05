@@ -8,7 +8,7 @@ import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 
 import type { Locale } from '../i18n/ui';
-import { localeDir, locales, t } from '../i18n/ui';
+import { defaultLocale, localeDir, locales, t } from '../i18n/ui';
 import { buildHreflang, SITE_URL } from '../lib/seo';
 
 interface Props {
@@ -40,10 +40,27 @@ const fullTitle = title.includes('EGY CINEMA') ? title : `${title} — EGY CINEM
 const otherLocale = locales.find((l) => l !== locale)!;
 const altHref = buildHreflang(otherLocale, path);
 
+// Strip the current locale prefix from `path` so we can re-prefix it with the
+// target locale. For the default locale (en, prefixDefaultLocale: false)
+// the path keeps no prefix; for non-default (ar) the path starts with /ar.
+const stripLocale = (p: string): string => {
+  for (const loc of locales) {
+    if (loc === defaultLocale) continue;
+    const prefix = `/${loc}`;
+    if (p === prefix) return '/';
+    if (p.startsWith(prefix + '/')) return p.slice(prefix.length);
+  }
+  return p;
+};
+const basePath = stripLocale(path);
+const enHref = `/${defaultLocale}${basePath === '/' ? '' : basePath}`;
+const arHref = `/ar${basePath === '/' ? '' : basePath}`;
+const hrefFor = (loc: Locale) => (loc === 'en' ? enHref : arHref);
+
 const navLinks = [
-  { href: `/${locale}#features`, label: t(locale, 'nav.features') },
-  { href: `/${locale}#install`, label: t(locale, 'nav.download') },
-  { href: `/${locale}/changelog`, label: t(locale, 'nav.changelog') },
+  { href: `${hrefFor(locale)}#features`, label: t(locale, 'nav.features') },
+  { href: `${hrefFor(locale)}#install`, label: t(locale, 'nav.download') },
+  { href: `${hrefFor(locale)}/changelog`, label: t(locale, 'nav.changelog') },
 ];
 ---
 
@@ -127,7 +144,7 @@ const navLinks = [
     </div>
     {!hideNav && (
       <header class="site-nav container">
-        <a href={`/${locale}`} class="site-nav__brand" aria-label="EGY CINEMA home">
+        <a href={hrefFor(locale)} class="site-nav__brand" aria-label="EGY CINEMA home">
           <img src="/logo.png" alt="EGY CINEMA" width="28" height="28" style="border-radius: 6px; display: block;" />
           EGY CINEMA
         </a>
@@ -138,14 +155,14 @@ const navLinks = [
             ))}
             <li class="lang-switch" aria-label="Language switcher">
               <a
-                href={otherLocale === 'en' ? canonical : altHref}
+                href={enHref}
                 aria-current={locale === 'en' ? 'true' : 'false'}
                 hreflang="en"
                 data-locale="en"
               >EN</a>
               <span aria-hidden="true">·</span>
               <a
-                href={otherLocale === 'ar' ? altHref : canonical}
+                href={arHref}
                 aria-current={locale === 'ar' ? 'true' : 'false'}
                 hreflang="ar"
                 data-locale="ar"
@@ -166,7 +183,7 @@ const navLinks = [
           <span>{t(locale, 'footer.copy').replace('{year}', String(new Date().getFullYear()))}</span>
           <ul class="site-footer__links">
             <li><a href="https://github.com/Youssf-Mohamed/movie_app" rel="noopener">{t(locale, 'footer.links.github')}</a></li>
-            <li><a href={`/${locale}/changelog`}>{t(locale, 'footer.links.changelog')}</a></li>
+            <li><a href={`${hrefFor(locale)}/changelog`}>{t(locale, 'footer.links.changelog')}</a></li>
             <li><a href="/admin">{t(locale, 'footer.links.admin')}</a></li>
           </ul>
         </div>
