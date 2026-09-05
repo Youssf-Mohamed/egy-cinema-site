@@ -136,21 +136,42 @@ main, .site-nav, .site-footer {
   transform: rotate(-1deg);
   opacity: 0.55;
   filter: blur(4px) brightness(0.85) saturate(1.02);
+  overflow: hidden;
 }
 
 .site-bg__row {
   display: flex;
-  gap: 14px;
+  gap: 0;
   width: max-content;
   will-change: transform;
+  flex-shrink: 0;
+}
+
+.site-bg__set {
+  display: flex;
+  gap: 14px;
+  padding-right: 14px;
+  flex-shrink: 0;
 }
 
 .site-bg__row--top {
-  animation: scrollRight 42s linear infinite;
+  animation: scrollLeft 60s linear infinite;
+  animation-fill-mode: both;
 }
 
 .site-bg__row--bottom {
-  animation: scrollRight 42s linear infinite reverse;
+  animation: scrollRight 60s linear infinite;
+  animation-fill-mode: both;
+}
+
+@keyframes scrollLeft {
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(calc(-100% - 14px), 0, 0); }
+}
+
+@keyframes scrollRight {
+  0%   { transform: translate3d(calc(-100% - 14px), 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
 }
 
 .site-bg__row img {
@@ -162,16 +183,6 @@ main, .site-nav, .site-footer {
   border-radius: 10px;
   border: 1px solid rgba(255,255,255,0.08);
   box-shadow: 0 4px 20px rgba(0,0,0,0.35);
-}
-
-@keyframes scrollRight {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
-}
-
-@keyframes bgDrift {
-  0% { transform: rotate(-1deg) translate(-5%, -6%) scale(1); }
-  100% { transform: rotate(-1deg) translate(-1%, -2%) scale(1.04); }
 }
 
 .site-bg__overlay {
@@ -236,14 +247,15 @@ main, .site-nav, .site-footer {
 
 @media (max-width: 900px) {
   .site-bg__track { opacity: 0.48; gap: 10px; }
+  .site-bg__row { gap: 0; }
+  .site-bg__set { gap: 10px; padding-right: 10px; }
   .site-bg__row img { width: 180px; }
-  .site-bg__row--top { animation-duration: 38s; }
-  .site-bg__row--bottom { animation-duration: 38s; }
+  .site-bg__row--top, .site-bg__row--bottom { animation-duration: 48s; }
 }
 
 @media (max-width: 600px) {
   .site-bg__track { opacity: 0.42; gap: 8px; }
-  .site-bg__row { gap: 8px; }
+  .site-bg__set { gap: 8px; padding-right: 8px; }
   .site-bg__row img { width: 150px; }
 }
 
