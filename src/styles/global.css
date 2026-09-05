@@ -447,6 +447,18 @@ section {
   border: 1px solid rgba(255,255,255,0.06);
 }
 
+.hero__window-media {
+  position: relative;
+  background: var(--nightfall);
+}
+
+.hero__window-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+}
+
 @media (max-width: 980px) {
   .hero__visual { flex: 0 0 380px; }
 }
