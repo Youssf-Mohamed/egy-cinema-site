@@ -13,8 +13,7 @@ const release = await fetchLatestRelease();
 
 const version = release?.min_version ?? '—';
 const releaseDate = release?.release_date ?? new Date().toISOString();
-const windowsUrl = release ? (platformUrl(release, 'windows_download_url') ?? platformUrl(release, 'download_url')) : null;
-const primaryDownloadHref = windowsUrl ?? `/${locale}#install`;
+const windowsUrl = release ? platformUrl(release, 'windows_download_url') : null;
 
 const orgLd = buildOrganizationLd();
 const appLd = release ? buildSoftwareAppLd(locale, version, releaseDate, windowsUrl) : null;
@@ -34,12 +33,11 @@ const formattedDate = release
 const platforms: PlatformKey[] = ['windows_download_url', 'android_download_url'];
 const platformList: Array<'windows' | 'android'> = ['windows', 'android'];
 const platformUrlMap: Record<'windows' | 'android', string | null> = {
-  windows: release ? (platformUrl(release, 'windows_download_url') ?? platformUrl(release, 'download_url')) : null,
-  android: release ? (platformUrl(release, 'android_download_url') ?? platformUrl(release, 'download_url')) : null,
+  windows: release ? platformUrl(release, 'windows_download_url') : null,
+  android: release ? platformUrl(release, 'android_download_url') : null,
 };
 const platformData = JSON.stringify(platformUrlMap);
 
-// Hero button label per pill (so the CTA text reflects the active platform)
 const heroButtonLabels: Record<'windows' | 'android', string> = {
   windows: t(locale, 'hero.cta'),
   android: t(locale, 'hero.cta.android'),
@@ -47,6 +45,10 @@ const heroButtonLabels: Record<'windows' | 'android', string> = {
 const heroButtonData = JSON.stringify(heroButtonLabels);
 
 void platforms;
+
+const heroPrimaryHref = release
+  ? (platformUrl(release, 'windows_download_url') ?? platformUrl(release, 'download_url') ?? `/${locale}#install`)
+  : `/${locale}#install`;
 ---
 
 <Base
@@ -79,7 +81,7 @@ void platforms;
             <DownloadButton
               id="hero-download"
               locale={locale}
-              href={primaryDownloadHref}
+              href={heroPrimaryHref}
               platform="windows"
               label={t(locale, 'hero.cta')}
             />

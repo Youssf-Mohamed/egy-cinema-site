@@ -88,9 +88,12 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   const androidUrlFromInput = String(form.get('android_download_url') ?? '').trim() || null;
   const genericInput = String(form.get('download_url') ?? '').trim() || null;
 
-  // download_url is the legacy Android/main column — keep it synced with Android
-  const resolvedAndroidUrl = androidUrlFromFile ?? androidUrlFromInput ?? genericInput;
-  const resolvedDownloadUrl = resolvedAndroidUrl ?? genericInput;
+  // Each column is independent — do NOT cross-populate. The legacy
+  // `download_url` is preserved for backward compatibility with older
+  // clients but is no longer forced to mirror the Android URL.
+  const resolvedAndroidUrl = androidUrlFromFile ?? androidUrlFromInput;
+  const resolvedWindowsUrl = windowsUrlFromFile ?? windowsUrlFromInput;
+  const resolvedDownloadUrl = genericInput;
 
   const payload = {
     min_version,
@@ -100,7 +103,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     is_published,
     release_date,
     download_url:         resolvedDownloadUrl,
-    windows_download_url: windowsUrlFromFile ?? windowsUrlFromInput,
+    windows_download_url: resolvedWindowsUrl,
     mac_download_url:     String(form.get('mac_download_url') ?? '').trim() || null,
     linux_download_url:   String(form.get('linux_download_url') ?? '').trim() || null,
     android_download_url: resolvedAndroidUrl,

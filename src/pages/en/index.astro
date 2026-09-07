@@ -13,8 +13,7 @@ const release = await fetchLatestRelease();
 
 const version = release?.min_version ?? '—';
 const releaseDate = release?.release_date ?? new Date().toISOString();
-const windowsUrl = release ? (platformUrl(release, 'windows_download_url') ?? platformUrl(release, 'download_url')) : null;
-const primaryDownloadHref = windowsUrl ?? `/${locale}#install`;
+const windowsUrl = release ? platformUrl(release, 'windows_download_url') : null;
 
 const orgLd = buildOrganizationLd();
 const appLd = release ? buildSoftwareAppLd(locale, version, releaseDate, windowsUrl) : null;
@@ -33,9 +32,12 @@ const formattedDate = release
 
 const platforms: PlatformKey[] = ['windows_download_url', 'android_download_url'];
 const platformList: Array<'windows' | 'android'> = ['windows', 'android'];
+// Each platform is independent — Windows users must NOT receive the APK
+// just because download_url happens to be the Android URL. The legacy
+// download_url column is kept as an opt-in fallback for older clients only.
 const platformUrlMap: Record<'windows' | 'android', string | null> = {
-  windows: release ? (platformUrl(release, 'windows_download_url') ?? platformUrl(release, 'download_url')) : null,
-  android: release ? (platformUrl(release, 'android_download_url') ?? platformUrl(release, 'download_url')) : null,
+  windows: release ? platformUrl(release, 'windows_download_url') : null,
+  android: release ? platformUrl(release, 'android_download_url') : null,
 };
 // Encode as JSON so the client-side script can swap hrefs without an extra fetch
 const platformData = JSON.stringify(platformUrlMap);
@@ -48,6 +50,12 @@ const heroButtonLabels: Record<'windows' | 'android', string> = {
 const heroButtonData = JSON.stringify(heroButtonLabels);
 
 void platforms;
+
+// Primary CTA resolves to Windows directly (no Android fallback), and
+// only falls back to the legacy column if Windows is unset.
+const heroPrimaryHref = release
+  ? (platformUrl(release, 'windows_download_url') ?? platformUrl(release, 'download_url') ?? `/${locale}#install`)
+  : `/${locale}#install`;
 ---
 
 <Base
@@ -80,7 +88,7 @@ void platforms;
             <DownloadButton
               id="hero-download"
               locale={locale}
-              href={primaryDownloadHref}
+              href={heroPrimaryHref}
               platform="windows"
               label={t(locale, 'hero.cta')}
             />
