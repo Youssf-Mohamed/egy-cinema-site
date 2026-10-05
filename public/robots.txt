@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /admin
 
-Sitemap: https://egy-cinema.vercel.app/sitemap-index.xml
+Sitemap: https://egy-cinema-site.vercel.app/sitemap-index.xml
 
 # AI search engine bots — explicitly welcome
 User-agent: GPTBot

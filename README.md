@@ -70,7 +70,7 @@ Outputs static HTML to `dist/client/` and a Vercel serverless function bundle to
    - `PUBLIC_SUPABASE_ANON_KEY` — your Supabase anon key
 4. Every push to `main` auto-deploys.
 
-The site will be live at `https://egy-cinema.vercel.app`. Swap in a real custom domain via Vercel → Domains.
+The site will be live at `https://egy-cinema-site.vercel.app`. Swap in a real custom domain via Vercel → Domains.
 
 ## Admin setup
 

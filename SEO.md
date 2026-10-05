@@ -1,6 +1,6 @@
 # SEO + AI search engine checklist
 
-This file tracks what's been done to make egy-cinema.vercel.app rank on Google and be cited by AI search engines (ChatGPT, Perplexity, Gemini, Google AI Overviews), and what to do post-launch.
+This file tracks what's been done to make egy-cinema-site.vercel.app rank on Google and be cited by AI search engines (ChatGPT, Perplexity, Gemini, Google AI Overviews), and what to do post-launch.
 
 ## Done at build time
 
@@ -27,7 +27,7 @@ This file tracks what's been done to make egy-cinema.vercel.app rank on Google a
 
 ## To do after Vercel deploy (within 24h of launch)
 
-- [ ] **Google Search Console** — submit `https://egy-cinema.vercel.app/sitemap-index.xml`
+- [ ] **Google Search Console** — submit `https://egy-cinema-site.vercel.app/sitemap-index.xml`
 - [ ] **Bing Webmaster Tools** — submit the same sitemap
 - [ ] **Test the OG image** — paste a deployed URL into https://www.opengraph.xyz/ and confirm the preview looks right
 - [ ] **Validate structured data** — paste the homepage HTML into https://validator.schema.org/ and confirm no errors
@@ -37,7 +37,7 @@ This file tracks what's been done to make egy-cinema.vercel.app rank on Google a
 ## To do within 1 week of launch (the actual ranking work)
 
 - [ ] **Submit to directories** — Product Hunt, alternative.me, FileHippo, AUR (if you ship a Linux package), Softonic
-- [ ] **GitHub README link** — add a badge/footer link from https://github.com/Youssf-Mohamed/movie_app to https://egy-cinema.vercel.app (do-follow backlink, the single highest-ROI SEO move)
+- [ ] **GitHub README link** — add a badge/footer link from https://github.com/Youssf-Mohamed/movie_app to https://egy-cinema-site.vercel.app (do-follow backlink, the single highest-ROI SEO move)
 - [ ] **Press kit page** — a public `/press` page with downloadable logo, screenshots, and a one-paragraph product description that journalists can copy. Gets you cited in articles.
 - [ ] **Manual outreach** — email 3–5 Arabic-language tech blogs (Arabian Gazette, MENAbytes, etc.) and offer early access. Each mention is a do-follow link.
 
@@ -62,9 +62,9 @@ There is no guaranteed path to LLM citation. The above gives you a fair shot; th
 ## Quick rank-check command (after launch)
 
 ```sh
-curl -sI https://egy-cinema.vercel.app/ | head -5
-curl -s https://egy-cinema.vercel.app/llms.txt | head -20
-curl -s https://egy-cinema.vercel.app/sitemap-index.xml
+curl -sI https://egy-cinema-site.vercel.app/ | head -5
+curl -s https://egy-cinema-site.vercel.app/llms.txt | head -20
+curl -s https://egy-cinema-site.vercel.app/sitemap-index.xml
 ```
 
 All three should return 200 + the expected content.

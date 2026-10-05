@@ -31,17 +31,17 @@ EGY CINEMA is a desktop and mobile streaming aggregator for Egyptian and Arab ci
 
 ## Downloads
 
-Latest version: https://egy-cinema.vercel.app/
+Latest version: https://egy-cinema-site.vercel.app/
 
-- Windows: https://egy-cinema.vercel.app/dl/windows
-- macOS: https://egy-cinema.vercel.app/dl/mac
-- Linux: https://egy-cinema.vercel.app/dl/linux
-- Android: https://egy-cinema.vercel.app/dl/android
-- iOS: https://egy-cinema.vercel.app/dl/ios
+- Windows: https://egy-cinema-site.vercel.app/dl/windows
+- macOS: https://egy-cinema-site.vercel.app/dl/mac
+- Linux: https://egy-cinema-site.vercel.app/dl/linux
+- Android: https://egy-cinema-site.vercel.app/dl/android
+- iOS: https://egy-cinema-site.vercel.app/dl/ios
 
 ## Changelog
 
-https://egy-cinema.vercel.app/changelog
+https://egy-cinema-site.vercel.app/changelog
 
 ## Contact
 

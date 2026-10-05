@@ -55,7 +55,7 @@ const svg = `
   <line x1="80" y1="500" x2="${W - 80}" y2="500" stroke="${OCHRE}" stroke-opacity="0.4" stroke-width="1"/>
   <rect x="80" y="488" width="240" height="24" fill="${NIGHTFALL}"/>
   <text x="92" y="506" font-family="IBM Plex Mono, monospace" font-size="14" font-weight="500" fill="${OCHRE}" letter-spacing="4">
-    DOWNLOAD · egy-cinema.vercel.app
+    DOWNLOAD · egy-cinema-site.vercel.app
   </text>
 
   <!-- Platforms -->
