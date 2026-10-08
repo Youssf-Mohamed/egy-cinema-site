@@ -102,7 +102,7 @@
   "footer.links.github": "GitHub",
   "footer.links.changelog": "سجل التحديثات",
   "footer.links.admin": "الإدارة",
-  "footer.copy": "© {year} إيجي سينما. مبني بـ Flutter.",
+  "footer.copy": "© {year} إيجي سينما. جميع الحقوق محفوظة.",
 
   "changelog.title": "سجل التحديثات",
   "changelog.lead": "كل إصدار، الأحدث أولاً. تريد أن تُخطَر؟ يتحقق التطبيق تلقائياً عند الفتح.",

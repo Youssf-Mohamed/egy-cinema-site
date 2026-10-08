@@ -21,9 +21,19 @@ const breadcrumbLd = buildBreadcrumbLd(locale, [
   path="/changelog"
   jsonLd={[breadcrumbLd]}
 >
-  <section class="hero" style="padding: 64px 0 32px;">
+  <section class="hero changelog-hero">
     <div class="container container--narrow">
-      <p class="hero__eyebrow">{t(locale, 'nav.changelog')}</p>
+      <div class="changelog-hero__breadcrumbs">
+        <a href={`/${locale}`} class="changelog-back-link" aria-label="العودة للصفحة الرئيسية">
+          <svg class="changelog-back-link__icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>الرئيسية</span>
+        </a>
+        <span class="changelog-hero__sep" aria-hidden="true">/</span>
+        <span class="changelog-hero__current">{t(locale, 'nav.changelog')}</span>
+      </div>
       <h1 class="hero__title" style="font-size: clamp(2.5rem, 6vw, 4rem);">{t(locale, 'changelog.title')}</h1>
       <p class="hero__tagline" style="margin-bottom: 0;">{t(locale, 'changelog.lead')}</p>
     </div>

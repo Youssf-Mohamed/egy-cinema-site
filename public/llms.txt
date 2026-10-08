@@ -1,6 +1,6 @@
 # EGY CINEMA
 
-> Free Arabic-language streaming app for movies and TV shows on Windows, macOS, Linux, Android, and iOS. Built with Flutter, backed by Supabase.
+> Free Arabic-language streaming app for movies and TV shows on Windows, macOS, Linux, Android, and iOS. Backed by Supabase.
 
 ## What it is
 

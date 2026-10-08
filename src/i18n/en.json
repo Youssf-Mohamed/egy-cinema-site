@@ -102,7 +102,7 @@
   "footer.links.github": "GitHub",
   "footer.links.changelog": "Changelog",
   "footer.links.admin": "Admin",
-  "footer.copy": "© {year} EGY CINEMA. Built with Flutter.",
+  "footer.copy": "© {year} EGY CINEMA. All rights reserved.",
 
   "changelog.title": "Changelog",
   "changelog.lead": "Every release, newest first. Want to be notified? The app checks on launch.",
