@@ -13,7 +13,10 @@ const { eyebrow, bare, id } = Astro.props;
 ) : (
   <div class="marquee-rule-wrap" id={id}>
     <hr class="marquee-rule" />
-    <span class="marquee-rule__label">{eyebrow}</span>
+    <span class="marquee-rule__label">
+      <span class="marquee-rule__bulb" aria-hidden="true"></span>
+      {eyebrow}
+    </span>
   </div>
 )}
 

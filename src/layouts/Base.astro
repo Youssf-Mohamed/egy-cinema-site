@@ -196,33 +196,50 @@ const navLinks = [
       <div class="site-bg__vignette"></div>
     </div>
     {!hideNav && (
-      <header class="site-nav container">
-        <a href={hrefFor(locale)} class="site-nav__brand" aria-label="EGY CINEMA home">
-          <img src="/logo.png" alt="EGY CINEMA" width="28" height="28" style="border-radius: 6px; display: block;" />
-          EGY CINEMA
-        </a>
-        <nav aria-label="Primary">
-          <ul class="site-nav__links">
-            {navLinks.map((l) => (
-              <li><a href={l.href}>{l.label}</a></li>
-            ))}
-            <li class="lang-switch" aria-label="Language switcher">
-              <a
-                href={enHref}
-                aria-current={locale === 'en' ? 'true' : 'false'}
-                hreflang="en"
-                data-locale="en"
-              >EN</a>
-              <span aria-hidden="true">·</span>
-              <a
-                href={arHref}
-                aria-current={locale === 'ar' ? 'true' : 'false'}
-                hreflang="ar"
-                data-locale="ar"
-              >AR</a>
-            </li>
-          </ul>
-        </nav>
+      <header class="site-header">
+        <div class="site-header__inner container">
+          <a href={hrefFor(locale)} class="site-nav__brand" aria-label="EGY CINEMA home">
+            <span class="site-nav__brand-logo-wrap">
+              <img src="/logo.png" alt="EGY CINEMA" width="28" height="28" style="border-radius: 6px; display: block;" />
+              <span class="site-nav__brand-pulse" aria-hidden="true"></span>
+            </span>
+            <span class="site-nav__brand-name">EGY CINEMA</span>
+          </a>
+          <nav aria-label="Primary" class="site-nav__menu">
+            <ul class="site-nav__links">
+              {navLinks.map((l) => (
+                <li><a href={l.href} class="site-nav__link">{l.label}</a></li>
+              ))}
+            </ul>
+            <div class="site-nav__actions">
+              <div class="lang-switch" aria-label="Language switcher">
+                <a
+                  href={enHref}
+                  class:list={['lang-switch__btn', locale === 'en' ? 'lang-switch__btn--active' : null]}
+                  aria-current={locale === 'en' ? 'true' : 'false'}
+                  hreflang="en"
+                  data-locale="en"
+                >EN</a>
+                <span class="lang-switch__divider" aria-hidden="true">/</span>
+                <a
+                  href={arHref}
+                  class:list={['lang-switch__btn', locale === 'ar' ? 'lang-switch__btn--active' : null]}
+                  aria-current={locale === 'ar' ? 'true' : 'false'}
+                  hreflang="ar"
+                  data-locale="ar"
+                >AR</a>
+              </div>
+              <a href={`${hrefFor(locale)}#install`} class="site-nav__quick-cta">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                <span>{t(locale, 'nav.download')}</span>
+              </a>
+            </div>
+          </nav>
+        </div>
       </header>
     )}
 
@@ -232,12 +249,29 @@ const navLinks = [
 
     {!hideFooter && (
       <footer class="site-footer">
-        <div class="container site-footer__row">
-          <span>{t(locale, 'footer.copy').replace('{year}', String(new Date().getFullYear()))}</span>
-          <ul class="site-footer__links">
-            <li><a href={`${hrefFor(locale)}/changelog`}>{t(locale, 'footer.links.changelog')}</a></li>
-            <li><a href="/admin">{t(locale, 'footer.links.admin')}</a></li>
-          </ul>
+        <div class="container site-footer__container">
+          <div class="site-footer__main">
+            <div class="site-footer__brand">
+              <div class="site-footer__logo-row">
+                <img src="/logo.png" alt="EGY CINEMA" width="24" height="24" style="border-radius: 5px;" />
+                <span class="site-footer__brand-name">EGY CINEMA</span>
+              </div>
+              <p class="site-footer__tagline">{t(locale, 'site.tagline')}</p>
+            </div>
+            <ul class="site-footer__links">
+              <li><a href={`${hrefFor(locale)}#features`}>{t(locale, 'nav.features')}</a></li>
+              <li><a href={`${hrefFor(locale)}#install`}>{t(locale, 'nav.download')}</a></li>
+              <li><a href={`${hrefFor(locale)}/changelog`}>{t(locale, 'footer.links.changelog')}</a></li>
+              <li><a href="/admin">{t(locale, 'footer.links.admin')}</a></li>
+            </ul>
+          </div>
+          <div class="site-footer__bottom">
+            <span>{t(locale, 'footer.copy').replace('{year}', String(new Date().getFullYear()))}</span>
+            <span class="site-footer__cinema-note">
+              <span class="site-footer__reel-dot" aria-hidden="true"></span>
+              {locale === 'ar' ? 'مبني بشغف لعشاق السينما العربية' : 'Crafted with passion for Arab cinema cinephiles'}
+            </span>
+          </div>
         </div>
       </footer>
     )}
