@@ -66,6 +66,10 @@
   --easing:           cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
+/* font-display: swap is enforced via the Google Fonts URL (?display=swap).
+   This ensures text renders immediately with the system font before Cairo loads,
+   preventing render-blocking and improving FCP/LCP scores. */
+
 * {
   box-sizing: border-box;
 }
@@ -79,6 +83,8 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  /* Ensure font fallback is usable before Cairo loads */
+  font-synthesis: weight style;
 }
 
 [dir="rtl"] {
@@ -321,6 +327,13 @@ p:last-child { margin-bottom: 0; }
 
 section {
   padding: 28px 0;
+}
+
+/* Skip content-visibility on the hero so it paints immediately for LCP.
+   All subsequent sections benefit from deferred rendering. */
+section:not(.hero) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
 }
 
 .section-card {

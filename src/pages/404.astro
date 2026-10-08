@@ -1,0 +1,132 @@
+---
+/**
+ * Custom 404 page — served for any unmatched route.
+ * Provides helpful links so users don't bounce.
+ */
+import Base from '../layouts/Base.astro';
+
+// Best-effort: detect locale from URL; fall back to 'en'
+const urlPath = Astro.url.pathname;
+const locale = urlPath.startsWith('/ar') ? 'ar' as const : 'en' as const;
+
+const links = [
+  { href: `/${locale === 'en' ? 'en' : 'ar'}`, label: locale === 'ar' ? 'الصفحة الرئيسية' : 'Home' },
+  { href: `/${locale === 'en' ? 'en' : 'ar'}#features`, label: locale === 'ar' ? 'المميزات' : 'Features' },
+  { href: `/${locale === 'en' ? 'en' : 'ar'}#install`, label: locale === 'ar' ? 'تحميل' : 'Download' },
+  { href: `/${locale === 'en' ? 'en' : 'ar'}/changelog`, label: locale === 'ar' ? 'سجل التغييرات' : 'Changelog' },
+];
+
+const title    = locale === 'ar' ? 'الصفحة غير موجودة — EGY CINEMA' : 'Page Not Found — EGY CINEMA';
+const desc     = locale === 'ar'
+  ? 'الصفحة التي تبحث عنها غير موجودة. ابدأ من الصفحة الرئيسية.'
+  : 'The page you\'re looking for doesn\'t exist. Head back home.';
+---
+
+<Base locale={locale} title={title} description={desc} path="/404">
+  <section class="not-found" aria-labelledby="nf-title">
+    <div class="container">
+      <div class="section-card nf-card">
+        <p class="nf-code" aria-hidden="true">404</p>
+        <h1 id="nf-title" class="nf-title">
+          {locale === 'ar' ? 'هذه الصفحة غير موجودة' : "This page doesn't exist"}
+        </h1>
+        <p class="nf-desc">
+          {locale === 'ar'
+            ? 'ربما تم نقلها أو حذفها أو أن الرابط خاطئ.'
+            : 'It may have been moved, deleted, or the link is wrong.'}
+        </p>
+
+        <nav class="nf-links" aria-label={locale === 'ar' ? 'روابط مفيدة' : 'Helpful links'}>
+          {links.map((l) => (
+            <a href={l.href} class="nf-link">{l.label}</a>
+          ))}
+        </nav>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .not-found {
+    display: flex;
+    align-items: center;
+    min-height: 70vh;
+    padding: 80px 0;
+  }
+
+  .nf-card {
+    text-align: center;
+    padding: 64px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .nf-code {
+    font-family: var(--font-slate);
+    font-size: clamp(5rem, 18vw, 10rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(254, 32, 32, 0.4);
+    margin: 0;
+    user-select: none;
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { -webkit-text-stroke-color: rgba(254, 32, 32, 0.4); }
+    50%       { -webkit-text-stroke-color: rgba(254, 32, 32, 0.75); }
+  }
+
+  .nf-title {
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    font-weight: 700;
+    color: var(--lantern);
+    margin: 0;
+  }
+
+  .nf-desc {
+    font-size: 1.0625rem;
+    color: var(--smoke);
+    max-width: 420px;
+    margin: 0 0 8px;
+  }
+
+  .nf-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 12px;
+  }
+
+  .nf-link {
+    display: inline-block;
+    padding: 10px 22px;
+    background: var(--midnight);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 6px;
+    font-family: var(--font-slate);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--smoke);
+    text-decoration: none;
+    transition: border-color 150ms var(--easing), color 150ms var(--easing), background 150ms var(--easing);
+  }
+
+  .nf-link:hover {
+    border-color: var(--ochre);
+    color: var(--lantern);
+    background: rgba(254, 32, 32, 0.08);
+    text-decoration: none;
+  }
+
+  @media (max-width: 600px) {
+    .nf-card { padding: 40px 20px; }
+  }
+</style>

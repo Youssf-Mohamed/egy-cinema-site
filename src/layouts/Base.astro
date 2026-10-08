@@ -1,11 +1,5 @@
 ---
 import '../styles/global.css';
-import '@fontsource/cairo/400.css';
-import '@fontsource/cairo/600.css';
-import '@fontsource/cairo/700.css';
-import '@fontsource/cairo/900.css';
-import '@fontsource/ibm-plex-mono/400.css';
-import '@fontsource/ibm-plex-mono/500.css';
 
 import type { Locale } from '../i18n/ui';
 import { defaultLocale, localeDir, locales, t } from '../i18n/ui';
@@ -70,12 +64,37 @@ const navLinks = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#131313" />
+
+    {/* Preconnect to speed up font loading */}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+
+    {/* Non-blocking Google Fonts — Cairo (display) + IBM Plex Mono (slate) */}
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    {/* Fallback for JS-disabled browsers */}
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      />
+    </noscript>
+
+    {/* Preload LCP image — hero mockup */}
+    <link rel="preload" as="image" href="/images/mockup/desktop-preview.webp" fetchpriority="high" />
+
     <link rel="icon" type="image/png" href="/logo.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content={t(locale, 'site.keywords')} />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="EGY CINEMA" />
     <link rel="canonical" href={canonical} />
 
     <link rel="alternate" hreflang={locale} href={canonical} />
@@ -90,11 +109,13 @@ const navLinks = [
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={fullTitle} />
     <meta property="og:locale" content={locale === 'ar' ? 'ar_EG' : 'en_US'} />
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}
     {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
 
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@egy_cinema" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
@@ -102,6 +123,7 @@ const navLinks = [
     {jsonLd.map((obj) => (
       <script type="application/ld+json" set:html={JSON.stringify(obj)} />
     ))}
+
   </head>
 
   <body>
@@ -109,62 +131,63 @@ const navLinks = [
       <div class="site-bg__track">
         <div class="site-bg__row site-bg__row--top" data-row="top">
           <div class="site-bg__set" data-set="1">
-            <img src="/images/login/tt0816692.jpg" alt="" loading="eager" decoding="async" fetchpriority="high" />
-            <img src="/images/login/tt11378946.jpg" alt="" loading="eager" decoding="async" fetchpriority="high" />
-            <img src="/images/login/tt12042730.jpg" alt="" loading="eager" decoding="async" fetchpriority="high" />
-            <img src="/images/login/tt15239678.jpg" alt="" loading="eager" decoding="async" fetchpriority="high" />
-            <img src="/images/login/tt1745960.jpg" alt="" loading="eager" decoding="async" />
-            <img src="/images/login/tt1757678.jpg" alt="" loading="eager" decoding="async" />
-            <img src="/images/login/tt15239678.jpg" alt="" loading="eager" decoding="async" />
-            <img src="/images/login/tt11378946.jpg" alt="" loading="eager" decoding="async" />
-            <img src="/images/login/tt0816692.jpg" alt="" loading="eager" decoding="async" />
-            <img src="/images/login/tt12042730.jpg" alt="" loading="eager" decoding="async" />
-            <img src="/images/login/tt1745960.jpg" alt="" loading="eager" decoding="async" />
-            <img src="/images/login/tt1757678.jpg" alt="" loading="eager" decoding="async" />
+            {/* WebP format — ~80% smaller than original JPGs */}
+            <img src="/images/login/tt0816692.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt11378946.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt12042730.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt15239678.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt1745960.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt1757678.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt15239678.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt11378946.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt0816692.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt12042730.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt1745960.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt1757678.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
           </div>
           <div class="site-bg__set" data-set="2" aria-hidden="true">
-            <img src="/images/login/tt0816692.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt11378946.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt12042730.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt15239678.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt1745960.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt1757678.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt15239678.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt11378946.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt0816692.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt12042730.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt1745960.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt1757678.jpg" alt="" loading="lazy" decoding="async" />
+            <img src="/images/login/tt0816692.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt11378946.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt12042730.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt15239678.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt1745960.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt1757678.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt15239678.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt11378946.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt0816692.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt12042730.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt1745960.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt1757678.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
           </div>
         </div>
         <div class="site-bg__row site-bg__row--bottom" data-row="bottom">
           <div class="site-bg__set" data-set="1">
-            <img src="/images/login/tt26443616.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt30144839.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt30460310.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt30825738.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt34378301.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt37287335.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt30460310.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt30825738.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt26443616.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt30144839.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt34378301.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt37287335.jpg" alt="" loading="lazy" decoding="async" />
+            <img src="/images/login/tt26443616.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt30144839.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt30460310.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt30825738.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt34378301.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt37287335.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt30460310.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt30825738.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt26443616.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt30144839.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt34378301.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt37287335.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
           </div>
           <div class="site-bg__set" data-set="2" aria-hidden="true">
-            <img src="/images/login/tt26443616.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt30144839.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt30460310.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt30825738.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt34378301.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt37287335.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt30460310.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt30825738.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt26443616.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt30144839.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt34378301.jpg" alt="" loading="lazy" decoding="async" />
-            <img src="/images/login/tt37287335.jpg" alt="" loading="lazy" decoding="async" />
+            <img src="/images/login/tt26443616.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt30144839.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt30460310.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt30825738.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt34378301.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt37287335.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt30460310.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt30825738.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt26443616.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt30144839.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt34378301.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
+            <img src="/images/login/tt37287335.webp" alt="" width="210" height="315" loading="lazy" decoding="async" />
           </div>
         </div>
       </div>
